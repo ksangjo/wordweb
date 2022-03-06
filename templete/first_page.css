@@ -1,0 +1,234 @@
+* {
+  box-sizing: border-box;
+  overflow: hidden;
+}
+@font-face {
+  font-family: 'ROKAFSansBold';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts2201-3@1.0/ROKAFSansBold.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+body {
+  font-size: 14px;
+  width: 100vw;
+  height: 900px;
+}
+.first_page {
+  width: 100%;
+  height: 900px;
+  background: rgba(255,255,255,1);
+  padding: 10px 10px;
+  margin: 0px;
+  opacity: 1;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  overflow: hidden;
+}
+.web_name {
+    width: 180px;
+    color: rgba(0,0,0,1);
+    position: absolute;
+    top: 60px;
+    left: 90px;
+    font-family: 'ROKAFSansBold';
+    font-weight: bold;
+    font-size: 45px;
+    opacity: 1;
+    text-align: left;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+.current_date {
+    color: rgba(0,0,0,1);
+    position: absolute;
+    top: 78px;
+    left: 286px;
+    font-family: Roboto;
+    font-weight: Medium;
+    font-size: 30px;
+    opacity: 1;
+    text-align: left;
+  }
+.right_button {
+    width: 760px;
+    height: 360px;
+    background: rgba(255, 0, 0, 0);
+    opacity: 1;
+    position: absolute;
+    top: 239px;
+    left: 1020px;
+    border: 0;
+  }
+.left_button {
+  width: 760px;
+  height: 360px;
+  background: rgba(255, 0, 0, 0);
+  opacity: 1;
+  position: absolute;
+  top: 239px;
+  left: 140px;
+  border: 0;
+}
+.word_card {
+  width: 720px;
+  height: 360px;
+  background: rgba(255,255,255,1);
+  opacity: 1;
+  position: absolute;
+  top: 239px;
+  left: 599px;
+  border: 10px solid rgba(0,0,0,1);
+  overflow: hidden;
+}
+.english {
+  position: absolute; 
+  left: 615px;
+  top: 330px;
+  height: 47px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 45px;
+  line-height: 47px;
+  text-align: center;
+  color: #000000;
+}
+.meaning {
+  position: absolute;
+  width: 99px;
+  height: 29px;
+  left: 911px;
+  top: 410px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 25px;
+  line-height: 29px;
+  text-align: center;
+  color: #000000;
+}
+.sentence {
+  position: absolute;
+  width: 217px;
+  height: 29px;
+  left: 852px;
+  top: 450px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 25px;
+  line-height: 29px;
+  text-align: center;
+  color: rgba(37, 37, 37, 0.71);
+}
+.O_button {
+  width: 100px;
+  height: 100px;
+  background: url("../images/O_button.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: absolute;
+  top: 625px;
+  left: 663px;
+}
+.X_button {
+  width: 100px;
+  height: 100px;
+  background: url("../images/X_button.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: absolute;
+  top: 625px;
+  left: 909px;
+}
+.return_button {
+  width: 100px;
+  height: 100px;
+  background: url("../images/return_button.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: absolute;
+  top: 625px;
+  left: 1155px;
+}
+.display {
+  width: 241px;
+  color: rgba(37,37,37,0.8100000023841858);
+  position: absolute;
+  top: 409px;
+  left: 839px;
+  font-family: Roboto;
+  font-weight: Regular;
+  opacity: 1;
+  text-align: center;
+}
+.bottom_letter {
+  width: 270px;
+  color: rgba(0,0,0,1);
+  position: absolute;
+  top: 825px;
+  left: 65px;  
+  font-family: 'ROKAFSansBold';
+  font-weight: regular;
+  font-size: 30px;
+  opacity: 1;
+  text-align: left;
+}
+.today_button {
+  width: 45px;
+  height: 157px;
+  background: rgba(196,196,196,1);
+  opacity: 1;
+  position: absolute;
+  top: 64px;
+  left: 1875px;
+  overflow: hidden;
+  border: 0;
+}
+.total_button {
+  width: 45px;
+  height: 157px;
+  background: rgba(37,37,37,0.8100000023841858);
+  opacity: 1;
+  position: absolute;
+  top: 239px;
+  left: 1875px;
+  overflow: hidden;
+  border: 0;
+}
+.today_letter {
+  width: 40px;
+  color: rgba(0,0,0,1);
+  position: absolute;
+  top: 75px;
+  left: 1877px;
+  font-family: Roboto;
+  font-weight: bold;
+  font-size: 23px;
+  opacity: 1;
+  text-align: center;
+  border: 0;
+  background: none;
+}
+.total_letter {
+  width: 40px;
+  color: rgba(255,255,255,1);
+  position: absolute;
+  top: 250px;
+  left: 1877px;
+  font-family: Roboto;
+  font-weight: bold;
+  font-size: 23px;
+  opacity: 1;
+  text-align: center;
+  border: 0;
+  background: none;
+}
