@@ -14,7 +14,10 @@ function right_click() {
             'Content-Type': 'application/text'
         }})
     .then((response) => response.text().then(function (text) {
-            document.getElementsByClassName('display')[0].innerHTML = text;
+            document.getElementsByClassName('english')[0].innerHTML = JSON.parse(text).word;
+            document.getElementsByClassName('meaning')[0].innerHTML = JSON.parse(text).meaning;
+            document.getElementsByClassName('sentence')[0].innerHTML = JSON.parse(text).sentence;
+            count++;
         }));
 }
 
