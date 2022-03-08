@@ -8,6 +8,12 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: 'OTWelcomeRA';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeRA.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
 body {
   font-size: 14px;
   width: 100vw;
@@ -33,7 +39,7 @@ body {
     left: 90px;
     font-family: 'ROKAFSansBold';
     font-weight: bold;
-    font-size: 45px;
+    font-size: 40px;
     opacity: 1;
     text-align: left;
     padding: 0;
@@ -41,15 +47,17 @@ body {
     background: none;
   }
 .current_date {
-    color: rgba(0,0,0,1);
     position: absolute;
-    top: 78px;
-    left: 286px;
-    font-family: Roboto;
-    font-weight: Medium;
+    width: 300px;
+    height: 42px;
+    left: 280px;
+    top: 80px;
+    font-family: 'OTWelcomeRA';
+    font-style: normal;
+    font-weight: medium;
     font-size: 30px;
-    opacity: 1;
-    text-align: left;
+    line-height: 42px;
+    color: #000000;
   }
 .right_button {
     width: 760px;
@@ -83,8 +91,9 @@ body {
   overflow: hidden;
 }
 .english {
-  position: absolute; 
-  left: 615px;
+  position: absolute;
+  text-align: center;
+  left: 890px;
   top: 330px;
   height: 47px;
   font-family: Roboto;
@@ -92,7 +101,6 @@ body {
   font-weight: bold;
   font-size: 45px;
   line-height: 47px;
-  text-align: center;
   color: #000000;
 }
 .meaning {
@@ -150,7 +158,7 @@ body {
 .return_button {
   width: 100px;
   height: 100px;
-  background: url("../images/return_button.png");
+  background: url("../images/return_button.jpg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
