@@ -34,5 +34,7 @@ function reload() {
     document.location.reload(true);
 }
 
-var dt = new Date();
-document.getElementById("currnet_date").innerHTML = dt.toLocaleString();
+function get_today() {
+    var dt = new Date();
+    document.getElementsByClassName("currnet_date").innerHTML = dt.toLocaleString();
+}
