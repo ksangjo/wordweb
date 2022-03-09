@@ -134,10 +134,6 @@ body {
 .O_button {
   width: 100px;
   height: 100px;
-  background: url("../images/O_button.png");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
   opacity: 1;
   position: absolute;
   top: 625px;

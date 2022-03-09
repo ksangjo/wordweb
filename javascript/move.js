@@ -36,5 +36,8 @@ function reload() {
 
 function get_today() {
     var dt = new Date();
-    document.getElementsByClassName("currnet_date").innerHTML = dt.toLocaleString();
+    const year = dt.getFullYear();
+    const month = dt.getMonth();
+    const date = dt.getDate();
+    document.getElementsByClassName('current_date')[0].innerHTML = `${year}년 ${month >= 10 ? month : '0' + month}월 ${date >= 10 ? date : '0' + date}일`;
 }
