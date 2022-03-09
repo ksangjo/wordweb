@@ -4,6 +4,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 from model import get_session, select_word, word_list, today, accumulated
+import io
+from starlette.responses import StreamingResponse
 
 app = FastAPI()
 
@@ -28,8 +30,31 @@ templates = Jinja2Templates(directory="templete")
 
 
 @app.get("/first_page", response_class=HTMLResponse)
-async def read_item(request: Request):
+async def first_page(request: Request):
     return templates.TemplateResponse("first_page.html", {"request": request})
+
+@app.get("/today.html", response_class=HTMLResponse)
+async def today(request: Request):
+    return templates.TemplateResponse("today.html", {"request": request})
+
+@app.get("/total.html", response_class=HTMLResponse)
+async def total(request: Request):
+    return templates.TemplateResponse("total.html", {"request": request})
+
+@app.get("/o_button")
+async def o_button():
+    with open("./images/O_button.png", 'rb') as im_png:
+        return StreamingResponse(io.BytesIO(im_png.read()), media_type="image/png")
+
+@app.get("/x_button")
+async def x_button():
+    with open("./images/X_button.png", 'rb') as im_png:
+        return StreamingResponse(io.BytesIO(im_png.read()), media_type="image/png")
+
+@app.get("/return_button")
+async def return_button():
+    with open("./images/return_button.jpg", 'rb') as im_jpg:
+        return StreamingResponse(io.BytesIO(im_jpg.read()), media_type="image/jpg")
 
 @app.get("/memorization/{whatpage}/{id}")
 async def checked_memorization(whatpage:str, id:int):
