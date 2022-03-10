@@ -39,5 +39,5 @@ function get_today() {
     const year = dt.getFullYear();
     const month = dt.getMonth();
     const date = dt.getDate();
-    document.getElementsByClassName('current_date')[0].innerHTML = `${year}년 ${month >= 10 ? month : '0' + month}월 ${date >= 10 ? date : '0' + date}일`;
+    document.getElementsByClassName('current_date')[0].innerHTML = `${year}년 ${month >= 10 ? month : '0' + (month+1)}월 ${date >= 10 ? date : '0' + date}일`;
 }
