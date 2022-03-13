@@ -101,6 +101,7 @@ body {
   font-weight: bold;
   font-size: 45px;
   line-height: 47px;
+  text-align: center center;
   color: #000000;
 }
 .meaning {
@@ -114,7 +115,7 @@ body {
   font-weight: bold;
   font-size: 25px;
   line-height: 29px;
-  text-align: center;
+  text-align: center center;
   color: #000000;
 }
 .sentence {
@@ -128,12 +129,12 @@ body {
   font-weight: 500;
   font-size: 25px;
   line-height: 29px;
-  text-align: center;
+  text-align: center center;
   color: rgba(37, 37, 37, 0.71);
 }
 .O_button {
   width: 100px;
-  height: 100px;
+  height: 95px;
   opacity: 1;
   position: absolute;
   top: 625px;
@@ -141,7 +142,7 @@ body {
 }
 .X_button {
   width: 100px;
-  height: 100px;
+  height: 95px;
   background: url("../images/X_button.png");
   background-repeat: no-repeat;
   background-position: center center;
@@ -152,8 +153,8 @@ body {
   left: 909px;
 }
 .return_button {
-  width: 100px;
-  height: 100px;
+  width: 95px;
+  height: 95px;
   background: url("../images/return_button.jpg");
   background-repeat: no-repeat;
   background-position: center center;
@@ -169,10 +170,14 @@ body {
   position: absolute;
   top: 409px;
   left: 839px;
-  font-family: Roboto;
+  font-family: 'OTWelcomeRA';
   font-weight: Regular;
+  font-size: 25px;
   opacity: 1;
   text-align: center;
+  padding: 0;
+  border: 0;
+  background: none;
 }
 .bottom_letter {
   width: 270px;
