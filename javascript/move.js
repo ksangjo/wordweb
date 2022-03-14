@@ -1,8 +1,26 @@
-let count = 0;
+let word_id = 0;
 
 function left_click() {
-    console.log(count);
-    fetch(`http://127.0.0.1:8000/memorization/total/${count}`, {
+    console.log(word_id);
+    let max_len = Number(fetch(`http://127.0.0.1:8000/len/total`, {
+        method:'GET',
+    headers:{
+        'Content-Type': 'application/text'
+    }}).text);
+    if (word_id >= max_len) {
+        display(true);
+    }
+    else {
+        display(false);
+    }
+    if (word_id > 0) {
+        fetch(`http://127.0.0.1:8000/plus/total/${word_id-1}`, {
+            method:'GET',
+        headers:{
+            'Content-Type': 'application/text'
+        }});
+    }
+    fetch(`http://127.0.0.1:8000/memorization/total/${word_id}`, {
         method:'GET',
         headers:{
             'Content-Type': 'application/text'
@@ -11,13 +29,32 @@ function left_click() {
             document.getElementsByClassName('english')[0].innerHTML = JSON.parse(text).word;
             document.getElementsByClassName('meaning')[0].innerHTML = JSON.parse(text).meaning;
             document.getElementsByClassName('sentence')[0].innerHTML = JSON.parse(text).sentence;
-            count++;
+            word_id++;
         }));
 }
 
 function right_click() {
-    console.log(count);
-    fetch(`http://127.0.0.1:8000/memorization/total/${count}`, {
+    console.log(word_id);
+    console.log(word_id);
+    let max_len = Number(fetch(`http://127.0.0.1:8000/len/total`, {
+        method:'GET',
+    headers:{
+        'Content-Type': 'application/text'
+    }}).text);
+    if (word_id >= max_len) {
+        display(true);
+    }
+    else {
+        display(false);
+    }
+    if (word_id > 0) {
+        fetch(`http://127.0.0.1:8000/reset/total/${word_id-1}`, {
+            method:'GET',
+        headers:{
+            'Content-Type': 'application/text'
+        }})
+    }
+    fetch(`http://127.0.0.1:8000/memorization/total/${word_id}`, {
         method:'GET',
         headers:{
             'Content-Type': 'application/text'
@@ -26,7 +63,7 @@ function right_click() {
             document.getElementsByClassName('english')[0].innerHTML = JSON.parse(text).word;
             document.getElementsByClassName('meaning')[0].innerHTML = JSON.parse(text).meaning;
             document.getElementsByClassName('sentence')[0].innerHTML = JSON.parse(text).sentence;
-            count++;
+            word_id++;
         }));
 }
 
@@ -42,10 +79,10 @@ function get_today() {
     document.getElementsByClassName('current_date')[0].innerHTML = `${year}년 ${month >= 10 ? month : '0' + (month+1)}월 ${date >= 10 ? date : '0' + date}일`;
 }
 
-function display() {
-    if(!"english") {
-        document.getElementsByClassName("display").style.visibility = "visible";
+function display(end_of_word) {
+    if(end_of_word) {
+        document.getElementsByClassName("display")[0].style.visibility = 'visible';
     }else {
-        document.getElementsByClassName("display").style.visibility = "hidden";
+        document.getElementsByClassName("display")[0].style.visibility = 'hidden';
     }
 }
