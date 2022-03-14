@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
-from model import get_session, select_word, word_list, today, accumulated
+from model import get_session, select_word, word_list, today, accumulated, plus_word, reset_word
 import io
 from starlette.responses import StreamingResponse
 
@@ -67,6 +67,27 @@ async def checked_memorization(whatpage:str, id:int):
     else:
         return HTTPException(status_code=404, detail="invalid page")
 
+@app.get("/plus/{whatpage}/{id}")
+async def plus_word_web(whatpage:str, id:int):
+    if whatpage == "total":
+        return plus_word(session=get_session(), word_model=word_list, index=id)
+    elif whatpage == "today":
+        return plus_word(session=get_session(), word_model=today, index=id)
+    elif whatpage == "accumulate":
+        return plus_word(session=get_session(), word_model=accumulated, index=id)
+    else:
+        return HTTPException(status_code=404, detail="invalid page")
+
+@app.get("/reset/{whatpage}/{id}")
+async def reset_word_web(whatpage:str, id:int):
+    if whatpage == "total":
+        return reset_word(session=get_session(), word_model=word_list, index=id)
+    elif whatpage == "today":
+        return reset_word(session=get_session(), word_model=today, index=id)
+    elif whatpage == "accumulate":
+        return reset_word(session=get_session(), word_model=accumulated, index=id)
+    else:
+        return HTTPException(status_code=404, detail="invalid page")
 
 if __name__ == "__main__":
     import os

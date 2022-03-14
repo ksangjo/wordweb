@@ -51,7 +51,7 @@ def word_insert():
             session.commit()
 
 def select_word(session, word_model, index):
-    statement = select(word_list).where(word_list.memory_count < 3)
+    statement = select(word_model).where(word_model.memory_count < 3)
     results = session.exec(statement).all()
     max_index = len(results)
     
@@ -60,10 +60,46 @@ def select_word(session, word_model, index):
     else:
         return "NO WORD LEFT"
 
+def plus_word(session, word_model, index):
+    statement = select(word_list).where(word_list.memory_count < 3)
+    results = session.exec(statement).all()
+    max_index = len(results)
+    
+    if index < max_index:
+        try:
+            my_word = results[index]
+            my_word.memory_count += 1
+            session.add(my_word)
+            session.commit()
+            session.refresh(my_word)
+            return True
+        except:
+            return "update DB error"
+    else:
+        return "index out of range"
+
+def reset_word(session, word_model, index):
+    statement = select(word_list).where(word_list.memory_count < 3)
+    results = session.exec(statement).all()
+    max_index = len(results)
+    
+    if index < max_index:
+        try:
+            my_word = results[index]
+            my_word.memory_count = 0
+            session.add(my_word)
+            session.commit()
+            session.refresh(my_word)
+            return True
+        except:
+            return "update DB error"
+    else:
+        return "index out of range"
+
 def main():
-    # create_db_and_tables()
-    word_insert()
-    # print(select_word(word_list, 1))
+    create_db_and_tables()
+    word_insert() 
+    print(select_word(get_session(), word_list, 1))
 
 if __name__ == "__main__":
     main()

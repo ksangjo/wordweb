@@ -1,8 +1,15 @@
-let count = 0;
+let word_id = 0;
 
 function left_click() {
-    console.log(count);
-    fetch(`http://127.0.0.1:8000/memorization/total/${count}`, {
+    console.log(word_id);
+    if (word_id > 0) {
+        fetch(`http://127.0.0.1:8000/plus/total/${word_id-1}`, {
+            method:'GET',
+        headers:{
+            'Content-Type': 'application/text'
+        }})
+    }
+    fetch(`http://127.0.0.1:8000/memorization/total/${word_id}`, {
         method:'GET',
         headers:{
             'Content-Type': 'application/text'
@@ -11,13 +18,20 @@ function left_click() {
             document.getElementsByClassName('english')[0].innerHTML = JSON.parse(text).word;
             document.getElementsByClassName('meaning')[0].innerHTML = JSON.parse(text).meaning;
             document.getElementsByClassName('sentence')[0].innerHTML = JSON.parse(text).sentence;
-            count++;
+            word_id++;
         }));
 }
 
 function right_click() {
-    console.log(count);
-    fetch(`http://127.0.0.1:8000/memorization/total/${count}`, {
+    console.log(word_id);
+    if (word_id > 0) {
+        fetch(`http://127.0.0.1:8000/reset/total/${word_id-1}`, {
+            method:'GET',
+        headers:{
+            'Content-Type': 'application/text'
+        }})
+    }
+    fetch(`http://127.0.0.1:8000/memorization/total/${word_id}`, {
         method:'GET',
         headers:{
             'Content-Type': 'application/text'
@@ -26,7 +40,7 @@ function right_click() {
             document.getElementsByClassName('english')[0].innerHTML = JSON.parse(text).word;
             document.getElementsByClassName('meaning')[0].innerHTML = JSON.parse(text).meaning;
             document.getElementsByClassName('sentence')[0].innerHTML = JSON.parse(text).sentence;
-            count++;
+            word_id++;
         }));
 }
 
