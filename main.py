@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
-from model import get_session, select_word, word_list, today, accumulated, plus_word, reset_word
+from model import get_session, select_word, word_list, today, accumulated, plus_word, reset_word, len_wordlist
 import io
 from starlette.responses import StreamingResponse
 
@@ -55,6 +55,17 @@ async def x_button():
 async def return_button():
     with open("./images/return_button.jpg", 'rb') as im_jpg:
         return StreamingResponse(io.BytesIO(im_jpg.read()), media_type="image/jpg")
+
+@app.get("/len/{whatpage}")
+async def len_my_wordlist(whatpage:str):
+    if whatpage == "total":
+        return len_wordlist(session=get_session(), word_model=word_list)
+    elif whatpage == "today":
+        return len_wordlist(session=get_session(), word_model=today)
+    elif whatpage == "accumulate":
+        return len_wordlist(session=get_session(), word_model=accumulated)
+    else:
+        return HTTPException(status_code=404, detail="invalid page")
 
 @app.get("/memorization/{whatpage}/{id}")
 async def checked_memorization(whatpage:str, id:int):

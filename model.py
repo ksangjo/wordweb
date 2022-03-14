@@ -60,6 +60,11 @@ def select_word(session, word_model, index):
     else:
         return "NO WORD LEFT"
 
+def len_wordlist(session, word_model):
+    statement = select(word_model).where(word_model.memory_count < 3)
+    results = session.exec(statement).all()
+    return len(results)
+
 def plus_word(session, word_model, index):
     statement = select(word_list).where(word_list.memory_count < 3)
     results = session.exec(statement).all()
