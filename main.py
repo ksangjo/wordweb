@@ -33,13 +33,21 @@ templates = Jinja2Templates(directory="templete")
 async def first_page(request: Request):
     return templates.TemplateResponse("first_page.html", {"request": request})
 
-@app.get("/today.html", response_class=HTMLResponse)
+@app.get("/today", response_class=HTMLResponse)
 async def today(request: Request):
     return templates.TemplateResponse("today.html", {"request": request})
 
-@app.get("/total.html", response_class=HTMLResponse)
+@app.get("/total", response_class=HTMLResponse)
 async def total(request: Request):
     return templates.TemplateResponse("total.html", {"request": request})
+
+@app.get("/today_review", response_class=HTMLResponse)
+async def today_review(request: Request):
+    return templates.TemplateResponse("today_review.html", {"request": request})
+
+@app.get("/total_review", response_class=HTMLResponse)
+async def total_review(request: Request):
+    return templates.TemplateResponse("total_review.html", {"request": request})
 
 @app.get("/o_button")
 async def o_button():
@@ -55,6 +63,11 @@ async def x_button():
 async def return_button():
     with open("./images/return_button.jpg", 'rb') as im_jpg:
         return StreamingResponse(io.BytesIO(im_jpg.read()), media_type="image/jpg")
+
+@app.get("/home")
+async def home():
+    with open("./images/home.png", 'rb') as im_png:
+        return StreamingResponse(io.BytesIO(im_png.read()), media_type="image/png")
 
 @app.get("/len/{whatpage}")
 async def len_my_wordlist(whatpage:str):
