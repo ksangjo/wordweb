@@ -1,4 +1,5 @@
 let word_id = 0;
+let return_history = [];
 
 function left_click() {
     console.log(word_id);
@@ -14,11 +15,15 @@ function left_click() {
         display(false);
     }
     if (word_id > 0) {
-        fetch(`http://127.0.0.1:8000/plus/total/${word_id-1}`, {
+        fetch(`http://127.0.0.1:8000/plus/total/${word_id}`, {
             method:'GET',
         headers:{
             'Content-Type': 'application/text'
-        }});
+        }})
+        .then((response) => response.text().then(function (text) {
+            let previous_status = JSON.parse(text)
+            return_history.push(previous_status);
+        }));
     }
     fetch(`http://127.0.0.1:8000/memorization/total/${word_id}`, {
         method:'GET',
@@ -26,15 +31,16 @@ function left_click() {
             'Content-Type': 'application/text'
         }})
     .then((response) => response.text().then(function (text) {
-            document.getElementsByClassName('english')[0].innerHTML = JSON.parse(text).word;
-            document.getElementsByClassName('meaning')[0].innerHTML = JSON.parse(text).meaning;
-            document.getElementsByClassName('sentence')[0].innerHTML = JSON.parse(text).sentence;
-            word_id++;
+            console.log(text);
+            let jsondata = JSON.parse(text);
+            document.getElementsByClassName('english')[0].innerHTML = jsondata.word;
+            document.getElementsByClassName('meaning')[0].innerHTML = jsondata.meaning;
+            document.getElementsByClassName('sentence')[0].innerHTML = jsondata.sentence;
+            word_id = jsondata.id;
         }));
 }
 
 function right_click() {
-    console.log(word_id);
     console.log(word_id);
     let max_len = Number(fetch(`http://127.0.0.1:8000/len/total`, {
         method:'GET',
@@ -48,11 +54,15 @@ function right_click() {
         display(false);
     }
     if (word_id > 0) {
-        fetch(`http://127.0.0.1:8000/reset/total/${word_id-1}`, {
+        fetch(`http://127.0.0.1:8000/reset/total/${word_id}`, {
             method:'GET',
         headers:{
             'Content-Type': 'application/text'
         }})
+        .then((response) => response.text().then(function (text) {
+            let previous_status = JSON.parse(text)
+            return_history.push(previous_status);
+        }));
     }
     fetch(`http://127.0.0.1:8000/memorization/total/${word_id}`, {
         method:'GET',
@@ -60,10 +70,11 @@ function right_click() {
             'Content-Type': 'application/text'
         }})
     .then((response) => response.text().then(function (text) {
-            document.getElementsByClassName('english')[0].innerHTML = JSON.parse(text).word;
-            document.getElementsByClassName('meaning')[0].innerHTML = JSON.parse(text).meaning;
-            document.getElementsByClassName('sentence')[0].innerHTML = JSON.parse(text).sentence;
-            word_id++;
+            let jsondata = JSON.parse(text)
+            document.getElementsByClassName('english')[0].innerHTML = jsondata.word;
+            document.getElementsByClassName('meaning')[0].innerHTML = jsondata.meaning;
+            document.getElementsByClassName('sentence')[0].innerHTML = jsondata.sentence;
+            word_id = jsondata.id;
         }));
 }
 
@@ -86,4 +97,21 @@ function display(end_of_word) {
     }else {
         document.getElementsByClassName("display")[0].style.visibility = 'hidden';
     }
+}
+
+function reset_exec() {
+    let status = return_history.pop();
+    console.log(status);
+    fetch(`http://127.0.0.1:8000/real_id/total/${status.real_id}/${status.count}`, {
+        method:'GET',
+        headers:{
+            'Content-Type': 'application/text'
+        }})
+    .then((response) => response.text().then(function (text) {
+            let jsondata = JSON.parse(text)
+            document.getElementsByClassName('english')[0].innerHTML = jsondata.word;
+            document.getElementsByClassName('meaning')[0].innerHTML = jsondata.meaning;
+            document.getElementsByClassName('sentence')[0].innerHTML = jsondata.sentence;
+            word_id = jsondata.id;
+        }));
 }
