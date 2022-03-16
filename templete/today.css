@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  overflow: hidden;
 }
 @font-face {
   font-family: 'ROKAFSansBold';
@@ -30,6 +31,7 @@ body {
   position: relative;
   top: 0px;
   left: 0px;
+  overflow: hidden;
 }
 .web_name {
   width: 180px;
@@ -59,6 +61,14 @@ body {
   line-height: 42px;
   color: #000000;
 }
+.title_line {
+  width: 440px;
+  position: absolute;
+  top: 107px;
+  left: 80px;
+  border-bottom: 4px solid rgba(0, 0, 0, 1);
+  margin: 10px;
+}
 .home {
   width: 55px;
   height: 55px;
@@ -68,14 +78,14 @@ body {
   background-size: cover;
   opacity: 1;
   position: absolute;
-  top: 850px;
+  top: 830px;
   left: 55px;
 }
-.todaylist_name {
+.page_title {
   width: 300px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 150px;
+  top: 139px;
   left: 90px;
   font-family: 'OTWelcomeRA';
   font-weight: Medium;
@@ -85,12 +95,12 @@ body {
 }
 .underText {
   width: 250px;
-  color: rgba(29, 28, 28, 0.81);
+  color: rgb(255, 153, 0);
   position: absolute;
-  top: 195px;
-  left: 78px;
+  top: 190px;
+  left: 80px;
   font-family: 'OTWelcomeRA';
-  font-weight: Medium;
+  font-weight: bold;
   font-size: 20px;
   opacity: 1;
   text-align: center;
@@ -98,11 +108,11 @@ body {
 .sendTotal_button {
   width: 236px;
   height: 42px;
-  background: rgb(255, 141, 141);
+  background: rgb(231, 231, 231);
   opacity: 1;
   position: absolute;
-  top: 145px;
-  left: 390px;
+  top: 140px;
+  left: 370px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   overflow: hidden;
 }
@@ -110,10 +120,10 @@ body {
   width: 217px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 159px;
-  left: 402px;
+  top: 154px;
+  left: 382px;
   font-family: 'OTWelcomeRA';
-  font-weight: Thin;
+  font-weight: bold;
   font-size: 21px;
   opacity: 1;
   text-align: left;
@@ -121,55 +131,83 @@ body {
 .resetToday_button {
   width: 160px;
   height: 42px;
-  background: rgb(255, 141, 141);
+  background: rgb(231, 231, 231);
   opacity: 1;
   position: absolute;
-  top: 145px;
-  left: 638px;
+  top: 140px;
+  left: 618px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   overflow: hidden;
 }
 .resetToday_text {
-  width: 95px;
+  width: 130px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 159px;
-  left: 673px;
+  top: 154px;
+  left: 634px;
   font-family: 'OTWelcomeRA';
-  font-weight: Thin;
+  font-weight: bold;
   font-size: 20px;
   opacity: 1;
   text-align: left;
 }
 .toTodayReview {
-  width: 169px;
-  height: 60px;
-  background: rgb(255, 255, 255);
+  width: 260px;
+  height: 42px;
+  background: rgb(231, 231, 231);
   opacity: 1;
   position: absolute;
-  top: 850px;
-  left: 1750px;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+  top: 140px;
+  left: 850px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   overflow: hidden;
+  padding: 0;
+  border: 0;
 }
 .toTodayReview_text {
-  width: 116px;
+  width: 240px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 862px;
-  left: 1775px;
+  top: 155px;
+  left: 860px;
   font-family: 'OTWelcomeRA';
-  font-weight: Thin;
+  font-weight: bold;
   font-size: 20px;
   opacity: 1;
   text-align: center;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+.word_today {
+  position: absolute;
+  color: rgba(255, 255, 255, 0);
+  width: 1773px;
+  height: 580px;
+  left: 80px;
+  top: 240px;
+  overflow: auto;
+}
+.word_today::-webkit-scrollbar {
+  width: 20px;
+}
+.word_today::-webkit-scrollbar-thumb {
+  background-color: #ffffff;
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 5px solid transparent;
+}
+.word_today::-webkit-scrollbar-track {
+  background-color: grey;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px white;
 }
 .e1 {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 250px;
-  left: 90px;
+  top: 5px;
+  left: 10px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -180,8 +218,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 284px;
-  left: 90px;
+  top: 39px;
+  left: 10px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -192,8 +230,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 318px;
-  left: 90px;
+  top: 73px;
+  left: 10px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -204,8 +242,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 352px;
-  left: 90px;
+  top: 107px;
+  left: 10px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -216,8 +254,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 386px;
-  left: 90px;
+  top: 141px;
+  left: 10px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -228,8 +266,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 420px;
-  left: 90px;
+  top: 175px;
+  left: 10px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -240,8 +278,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 454px;
-  left: 90px;
+  top: 209px;
+  left: 10px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -252,8 +290,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 488px;
-  left: 90px;
+  top: 243px;
+  left: 10px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -264,8 +302,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 522px;
-  left: 90px;
+  top: 277px;
+  left: 10px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -276,8 +314,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 556px;
-  left: 90px;
+  top: 311px;
+  left: 10px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -288,8 +326,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 590px;
-  left: 90px;
+  top: 345px;
+  left: 10px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -300,8 +338,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 624px;
-  left: 90px;
+  top: 379px;
+  left: 10px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -312,8 +350,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 658px;
-  left: 90px;
+  top: 413px;
+  left: 10px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -324,8 +362,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 692px;
-  left: 90px;
+  top: 447px;
+  left: 10px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -336,8 +374,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 726px;
-  left: 90px;
+  top: 481px;
+  left: 10px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -348,8 +386,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 760px;
-  left: 90px;
+  top: 515px;
+  left: 10px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -360,8 +398,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 794px;
-  left: 90px;
+  top: 549px;
+  left: 10px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -372,8 +410,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 828px;
-  left: 90px;
+  top: 583px;
+  left: 10px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -384,8 +422,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 862px;
-  left: 90px;
+  top: 617px;
+  left: 10px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -396,8 +434,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 896px;
-  left: 90px;
+  top: 651px;
+  left: 10px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -408,8 +446,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 250px;
-  left: 560px;
+  top: 5px;
+  left: 480px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -420,8 +458,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 284px;
-  left: 560px;
+  top: 39px;
+  left: 480px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -432,8 +470,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 318px;
-  left: 560px;
+  top: 73px;
+  left: 480px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -444,8 +482,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 352px;
-  left: 560px;
+  top: 107px;
+  left: 480px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -456,8 +494,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 386px;
-  left: 560px;
+  top: 141px;
+  left: 480px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -468,8 +506,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 420px;
-  left: 560px;
+  top: 175px;
+  left: 480px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -480,8 +518,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 454px;
-  left: 560px;
+  top: 209px;
+  left: 480px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -492,8 +530,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 488px;
-  left: 560px;
+  top: 243px;
+  left: 480px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -504,8 +542,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 522px;
-  left: 560px;
+  top: 277px;
+  left: 480px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -516,8 +554,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 556px;
-  left: 560px;
+  top: 311px;
+  left: 480px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -528,8 +566,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 590px;
-  left: 560px;
+  top: 345px;
+  left: 480px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -540,8 +578,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 624px;
-  left: 560px;
+  top: 379px;
+  left: 480px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -552,8 +590,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 658px;
-  left: 560px;
+  top: 413px;
+  left: 480px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -564,8 +602,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 692px;
-  left: 560px;
+  top: 447px;
+  left: 480px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -576,8 +614,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 726px;
-  left: 560px;
+  top: 481px;
+  left: 480px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -588,8 +626,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 760px;
-  left: 560px;
+  top: 515px;
+  left: 480px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -600,8 +638,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 794px;
-  left: 560px;
+  top: 549px;
+  left: 480px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -612,8 +650,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 828px;
-  left: 560px;
+  top: 583px;
+  left: 480px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -624,8 +662,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 862px;
-  left: 560px;
+  top: 617px;
+  left: 480px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -636,8 +674,8 @@ body {
   width: 420px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 896px;
-  left: 560px;
+  top: 651px;
+  left: 480px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -648,8 +686,8 @@ body {
   width: 622px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 250px;
-  left: 1030px;
+  top: 5px;
+  left: 950px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -660,8 +698,8 @@ body {
   width: 622px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 284px;
-  left: 1030px;
+  top: 39px;
+  left: 950px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -672,8 +710,8 @@ body {
   width: 622px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 318px;
-  left: 1030px;
+  top: 73px;
+  left: 950px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -684,8 +722,8 @@ body {
   width: 622px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 352px;
-  left: 1030px;
+  top: 107px;
+  left: 950px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -696,8 +734,8 @@ body {
   width: 622px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 386px;
-  left: 1030px;
+  top: 141px;
+  left: 950px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -708,8 +746,8 @@ body {
   width: 622px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 420px;
-  left: 1030px;
+  top: 175px;
+  left: 950px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -720,8 +758,8 @@ body {
   width: 622px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 454px;
-  left: 1030px;
+  top: 209px;
+  left: 950px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -732,8 +770,8 @@ body {
   width: 622px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 488px;
-  left: 1030px;
+  top: 243px;
+  left: 950px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -744,8 +782,8 @@ body {
   width: 622px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 522px;
-  left: 1030px;
+  top: 277px;
+  left: 950px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -756,8 +794,8 @@ body {
   width: 622px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 556px;
-  left: 1030px;
+  top: 311px;
+  left: 950px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -768,8 +806,8 @@ body {
   width: 622px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 590px;
-  left: 1030px;
+  top: 345px;
+  left: 950px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -780,8 +818,8 @@ body {
   width: 622px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 624px;
-  left: 1030px;
+  top: 379px;
+  left: 950px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -792,8 +830,8 @@ body {
   width: 622px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 658px;
-  left: 1030px;
+  top: 413px;
+  left: 950px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -804,8 +842,8 @@ body {
   width: 622px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 692px;
-  left: 1030px;
+  top: 447px;
+  left: 950px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -816,8 +854,8 @@ body {
   width: 622px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 726px;
-  left: 1030px;
+  top: 481px;
+  left: 950px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -828,8 +866,8 @@ body {
   width: 622px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 760px;
-  left: 1030px;
+  top: 515px;
+  left: 950px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -840,8 +878,8 @@ body {
   width: 622px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 794px;
-  left: 1030px;
+  top: 549px;
+  left: 950px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -852,8 +890,8 @@ body {
   width: 622px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 828px;
-  left: 1030px;
+  top: 583px;
+  left: 950px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -864,8 +902,8 @@ body {
   width: 622px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 862px;
-  left: 1030px;
+  top: 617px;
+  left: 950px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;
@@ -876,8 +914,8 @@ body {
   width: 622px;
   color: rgba(0, 0, 0, 1);
   position: absolute;
-  top: 896px;
-  left: 1030px;
+  top: 651px;
+  left: 950px;
   font-family: Roboto;
   font-weight: Thin;
   font-size: 20px;

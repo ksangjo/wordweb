@@ -72,10 +72,6 @@ function reload_alert() {
     alert('<새로고침> count는 저장되지만 1번 단어에서 재시작합니다.')
 }
 
-function reload() {
-    document.location.reload(true);
-}
-
 function get_today() {
     var dt = new Date();
     const year = dt.getFullYear();
