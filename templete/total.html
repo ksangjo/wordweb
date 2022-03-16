@@ -5,19 +5,18 @@
     <link href="/templete/total.css" rel="stylesheet"/>
     <title>Document</title></head>
     <script src="/javascript/move.js"></script>
-<body>
-    <body onload="get_today()">
-    <class="total">
-    <form method="GET">
-        <button class="web_name" onclick="reload()">편입영어</button>
-    </form>
+<body onload="get_today()">
+<div class="total">
+    <button class="web_name" onclick="location.href='first_page'">편입영어</button>
     <span class="current_date"></span>
+    <span class="title_line"></span>
     <img class="home" src="http://127.0.0.1:8000/home" onclick="location.href='first_page'"></img>
-    <span class="totallist_name"># 누적 전체 단어장</span>
-    <div class="toTotalReview"></div>
-    <div class="resetTotal_button"></div>
-    <span class="resetTotal_text">모두 지우기</span>
-    <span class="toTotalReview_text">누적단어 학습하기</span>
+    <span class="page_title"># 누적 전체 단어장🗓️</span>
+    <button class="resetTotal_button"></button>
+    <button class="resetTotal_text">RESET ALL</button>
+    <button class="toTotalReview" onclick="location.href='total_review'"></button>
+    <button class="toTotalReview_text" onclick="location.href='total_review'">누적단어 학습하기</button>
+    <div class="word_today">
     <span class="e1">English</span><span class="e2">English</span><span class="e3">English</span><span
         class="e4">English</span><span class="e5">English</span><span class="e6">English</span><span
         class="e7">English</span><span class="e8">English</span><span class="e9">English</span><span
@@ -34,7 +33,7 @@
         class="sen7">sentence</span><span class="sen8">sentence</span><span class="sen9">sentence</span><span class="sen10">sentence</span><span
         class="sen11">sentence</span><span class="sen12">sentence</span><span class="sen13">sentence</span><span
         class="sen14">sentence</span><span class="sen15">sentence</span><span class="sen16">sentence</span><span
-        class="sen17">sentence</span><span class="sen18">sentence</span><span class="sen19">sentence</span><span class="sen20">sentence</span>
+        class="sen17">sentence</span><span class="sen18">sentence</span><span class="sen19">sentence</span><span class="sen20">sentence</span></div>
 </div>
 </body>
 </html>
