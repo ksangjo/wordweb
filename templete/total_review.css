@@ -182,16 +182,28 @@ body {
   background: none;
 }
 .home {
-  width: 100px;
-  height: 95px;
+  width: 55px;
+  height: 55px;
   background: url('../images/home.png');
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
   opacity: 1;
   position: absolute;
-  top: 991px;
+  top: 850px;
   left: 55px;
+}
+.tohome {
+  width: 270px;
+  color: rgba(0, 0, 0, 1);
+  position: absolute;
+  top: 865px;
+  left: 125px;
+  font-family: Roboto;
+  font-weight: regular;
+  font-size: 25px;
+  opacity: 1;
+  text-align: left;
 }
 .today_button {
   width: 45px;

@@ -67,6 +67,11 @@ function right_click() {
         }));
 }
 
+function reload_alert() {
+    document.location.reload(true);
+    alert('<새로고침> count는 저장되지만 1번 단어에서 재시작합니다.')
+}
+
 function reload() {
     document.location.reload(true);
 }
