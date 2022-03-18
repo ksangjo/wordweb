@@ -5,7 +5,6 @@ from sqlmodel import Field, Session, SQLModel, create_engine, select
 
 import csv
 
-
 class word_list(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     word: str
@@ -51,12 +50,12 @@ def word_insert():
             session.commit()
 
 def select_word(session, word_model, index):
-    statement = select(word_model).where(word_model.memory_count < 3)
+    statement = select(word_model).where(word_model.memory_count < 3).where(word_list.id > index)
     results = session.exec(statement).all()
-    max_index = len(results)
+    max_index = len(session.exec(select(word_model)).all())
     
     if index < max_index:
-        return results[index]
+        return results[0]
     else:
         return "NO WORD LEFT"
 
@@ -66,40 +65,55 @@ def len_wordlist(session, word_model):
     return len(results)
 
 def plus_word(session, word_model, index):
-    statement = select(word_list).where(word_list.memory_count < 3)
+    statement = select(word_list).where(word_list.id == index)
     results = session.exec(statement).all()
-    max_index = len(results)
+    max_index = len(session.exec(select(word_model)).all())
     
     if index < max_index:
         try:
-            my_word = results[index]
+            my_word = results[0]
             my_word.memory_count += 1
             session.add(my_word)
             session.commit()
             session.refresh(my_word)
-            return True
+            return {"real_id":my_word.id, "count":my_word.memory_count-1}
         except:
             return "update DB error"
     else:
         return "index out of range"
 
 def reset_word(session, word_model, index):
-    statement = select(word_list).where(word_list.memory_count < 3)
+    statement = select(word_list).where(word_list.id == index)
     results = session.exec(statement).all()
-    max_index = len(results)
+    max_index = len(session.exec(select(word_model)).all())
     
     if index < max_index:
         try:
-            my_word = results[index]
+            my_word = results[0]
+            previous_count = my_word.memory_count
             my_word.memory_count = 0
             session.add(my_word)
             session.commit()
             session.refresh(my_word)
-            return True
+            return {"real_id":my_word.id, "count":previous_count}
         except:
             return "update DB error"
     else:
         return "index out of range"
+
+def call_real_id(session, word_model, real_id, mem_count):
+    statement = select(word_list).where(word_list.id == real_id)
+    results = session.exec(statement).all()
+
+    if results:
+        my_word = results[0]
+        my_word.memory_count = mem_count
+        session.add(my_word)
+        session.commit()
+        session.refresh(my_word)
+        return my_word
+    else:
+        "real id is invalid"
 
 def main():
     create_db_and_tables()
