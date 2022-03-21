@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request, HTTPException
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
@@ -123,6 +123,10 @@ async def calling_real_id(whatpage:str, id:int, memory_count:int):
         return call_real_id(session=get_session(), word_model=accumulated, real_id=id, mem_count = memory_count)
     else:
         return HTTPException(status_code=404, detail="invalid page")
+
+@app.get("/", response_class=RedirectResponse)
+def root() -> str:
+    return "/first_page"
 
 if __name__ == "__main__":
     import os
