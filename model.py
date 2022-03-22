@@ -2,6 +2,7 @@ from os import stat
 import re
 from typing import Optional, Generator
 from sqlmodel import Field, Session, SQLModel, create_engine, select
+from datetime import date
 
 import csv
 
@@ -11,6 +12,7 @@ class word_list(SQLModel, table=True):
     meaning: str
     memory_count: int = 0
     sentence: Optional[str] = None
+    inserted_date: Optional[date] = Field(default=date.today())
 
 class today(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -18,6 +20,7 @@ class today(SQLModel, table=True):
     meaning: str
     memory_count: int = 0
     sentence: Optional[str] = None
+    inserted_date: Optional[date] = Field(default=date.today())
 
 class accumulated(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -25,6 +28,7 @@ class accumulated(SQLModel, table=True):
     meaning: str
     memory_count: int = 0
     sentence: Optional[str] = None
+    inserted_date: Optional[date] = Field(default=date.today())
 
 sqlite_file_name = "database.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
@@ -49,12 +53,12 @@ def word_insert():
                 session.add(word)
             session.commit()
 
-def select_word(session, word_model, index):
-    statement = select(word_model).where(word_model.memory_count < 3).where(word_list.id > index)
+def select_word(session, word_model, index, offset=100000000):
+    statement = select(word_model).where(word_model.memory_count < 3).where(word_list.id > index).where(word_list.id <= offset)
     results = session.exec(statement).all()
     max_index = len(session.exec(select(word_model)).all())
     
-    if index < max_index:
+    if len(results) > 0 and index < max_index:
         return results[0]
     else:
         return "NO WORD LEFT"

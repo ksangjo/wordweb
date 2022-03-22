@@ -80,14 +80,14 @@ async def len_my_wordlist(whatpage:str):
     else:
         return HTTPException(status_code=404, detail="invalid page")
 
-@app.get("/memorization/{whatpage}/{id}")
-async def checked_memorization(whatpage:str, id:int):
+@app.get("/memorization/{whatpage}/{id}/{offset}")
+async def checked_memorization(whatpage:str, id:int, offset:int=100000000):
     if whatpage == "total":
-        return select_word(session=get_session(), word_model=word_list, index=id)
+        return select_word(session=get_session(), word_model=word_list, index=id, offset=offset)
     elif whatpage == "today":
-        return select_word(session=get_session(), word_model=today, index=id)
+        return select_word(session=get_session(), word_model=today, index=id, offset=offset)
     elif whatpage == "accumulate":
-        return select_word(session=get_session(), word_model=accumulated, index=id)
+        return select_word(session=get_session(), word_model=accumulated, index=id, offset=offset)
     else:
         return HTTPException(status_code=404, detail="invalid page")
 

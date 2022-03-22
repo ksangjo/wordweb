@@ -1,20 +1,23 @@
 let word_id = 0;
 let return_history = [];
+let show_count = 0;
+let startup_index = 0;
+let offset_index = 100000000;
 
-function left_click() {
-    console.log(word_id);
+function circulating() {
+    show_count = 0;
     let max_len = Number(fetch(`http://127.0.0.1:8000/len/total`, {
         method:'GET',
     headers:{
         'Content-Type': 'application/text'
     }}).text);
-    if (word_id >= max_len) {
-        display(true);
+    if (show_count !== 0 && (show_count % 50 === 0 || word_id >= max_len)) {
+        end_stage(true);
     }
     else {
-        display(false);
+        end_stage(false);
     }
-    if (word_id > 0) {
+    if (word_id > 0 && show_count % 50 !== 0) {
         fetch(`http://127.0.0.1:8000/plus/total/${word_id}`, {
             method:'GET',
         headers:{
@@ -25,35 +28,134 @@ function left_click() {
             return_history.push(previous_status);
         }));
     }
-    fetch(`http://127.0.0.1:8000/memorization/total/${word_id}`, {
-        method:'GET',
-        headers:{
-            'Content-Type': 'application/text'
-        }})
-    .then((response) => response.text().then(function (text) {
-            console.log(text);
-            let jsondata = JSON.parse(text);
-            document.getElementsByClassName('english')[0].innerHTML = jsondata.word;
-            document.getElementsByClassName('meaning')[0].innerHTML = jsondata.meaning;
-            document.getElementsByClassName('sentence')[0].innerHTML = jsondata.sentence;
-            word_id = jsondata.id;
-        }));
+    show_count++;
+    word_id = startup_index-1;
+    if(show_count % 50 !== 0) {
+        fetch(`http://127.0.0.1:8000/memorization/total/${word_id}/${offset_index}`, {
+            method:'GET',
+            headers:{
+                'Content-Type': 'application/text'
+            }})
+        .then((response) => response.text().then(function (text) {
+                if (text === "NO WORD LEFT") {
+                    display(true);
+                }
+                else {
+                    display(false);
+                    let jsondata = JSON.parse(text);
+                    document.getElementsByClassName('english')[0].innerHTML = jsondata.word;
+                    document.getElementsByClassName('meaning')[0].innerHTML = jsondata.meaning;
+                    document.getElementsByClassName('sentence')[0].innerHTML = jsondata.sentence;
+                    word_id = jsondata.id;
+                }
+            }));
+    }
 }
 
-function right_click() {
-    console.log(word_id);
+function next_fifty() {
+    if (show_count % 50 !== 0) {
+        return
+    }
     let max_len = Number(fetch(`http://127.0.0.1:8000/len/total`, {
         method:'GET',
     headers:{
         'Content-Type': 'application/text'
     }}).text);
-    if (word_id >= max_len) {
+    show_count++;
+    if (show_count !== 0 && (show_count % 50 === 0 || word_id >= max_len)) {
         display(true);
     }
     else {
         display(false);
     }
-    if (word_id > 0) {
+    if (word_id > 0 && show_count % 50 !== 0) {
+        fetch(`http://127.0.0.1:8000/plus/total/${word_id}`, {
+            method:'GET',
+        headers:{
+            'Content-Type': 'application/text'
+        }})
+        .then((response) => response.text().then(function (text) {
+            let previous_status = JSON.parse(text)
+            return_history.push(previous_status);
+        }));
+    }
+    if(show_count % 50 !== 0) {
+        fetch(`http://127.0.0.1:8000/memorization/total/${word_id}/${offset_index}`, {
+            method:'GET',
+            headers:{
+                'Content-Type': 'application/text'
+            }})
+        .then((response) => response.text().then(function (text) {
+                let jsondata = JSON.parse(text);
+                document.getElementsByClassName('english')[0].innerHTML = jsondata.word;
+                document.getElementsByClassName('meaning')[0].innerHTML = jsondata.meaning;
+                document.getElementsByClassName('sentence')[0].innerHTML = jsondata.sentence;
+                word_id = jsondata.id;
+                startup_index = word_id;
+                console.log("startup", word_id);
+            }));
+    }
+}
+
+function left_click() {
+    let max_len = Number(fetch(`http://127.0.0.1:8000/len/total`, {
+        method:'GET',
+    headers:{
+        'Content-Type': 'application/text'
+    }}).text);
+    if (show_count !== 0 && (show_count % 50 === 0 || word_id >= max_len)) {
+        end_stage(true);
+    }
+    else {
+        end_stage(false);
+    }
+    if (word_id > 0 && show_count % 50 !== 0) {
+        fetch(`http://127.0.0.1:8000/plus/total/${word_id}`, {
+            method:'GET',
+        headers:{
+            'Content-Type': 'application/text'
+        }})
+        .then((response) => response.text().then(function (text) {
+            let previous_status = JSON.parse(text)
+            return_history.push(previous_status);
+        }));
+    }
+    if(show_count % 50 !== 0) {
+        fetch(`http://127.0.0.1:8000/memorization/total/${word_id}/${offset_index}`, {
+            method:'GET',
+            headers:{
+                'Content-Type': 'application/text'
+            }})
+        .then((response) => response.text().then(function (text) {
+                if (text === "NO WORD LEFT") {
+                    display(true);
+                }
+                else {
+                    display(false);
+                    let jsondata = JSON.parse(text);
+                    document.getElementsByClassName('english')[0].innerHTML = jsondata.word;
+                    document.getElementsByClassName('meaning')[0].innerHTML = jsondata.meaning;
+                    document.getElementsByClassName('sentence')[0].innerHTML = jsondata.sentence;
+                    word_id = jsondata.id;
+                    show_count++;
+                }
+            }));
+    }
+}
+
+function right_click() {
+    let max_len = Number(fetch(`http://127.0.0.1:8000/len/total`, {
+        method:'GET',
+    headers:{
+        'Content-Type': 'application/text'
+    }}).text);
+    if (show_count !== 0 && (show_count % 50 === 0 || word_id >= max_len)) {
+        end_stage(true);
+    }
+    else {
+        end_stage(false);
+    }
+    if (word_id > 0 && show_count % 50 !== 0) {
         fetch(`http://127.0.0.1:8000/reset/total/${word_id}`, {
             method:'GET',
         headers:{
@@ -64,18 +166,27 @@ function right_click() {
             return_history.push(previous_status);
         }));
     }
-    fetch(`http://127.0.0.1:8000/memorization/total/${word_id}`, {
-        method:'GET',
-        headers:{
-            'Content-Type': 'application/text'
-        }})
-    .then((response) => response.text().then(function (text) {
-            let jsondata = JSON.parse(text)
-            document.getElementsByClassName('english')[0].innerHTML = jsondata.word;
-            document.getElementsByClassName('meaning')[0].innerHTML = jsondata.meaning;
-            document.getElementsByClassName('sentence')[0].innerHTML = jsondata.sentence;
-            word_id = jsondata.id;
-        }));
+    if(show_count % 50 !== 0) {
+        fetch(`http://127.0.0.1:8000/memorization/total/${word_id}/${offset_index}`, {
+            method:'GET',
+            headers:{
+                'Content-Type': 'application/text'
+            }})
+        .then((response) => response.text().then(function (text) {
+                if (text === "NO WORD LEFT") {
+                    display(true);
+                }
+                else {
+                    display(false);
+                    let jsondata = JSON.parse(text)
+                    document.getElementsByClassName('english')[0].innerHTML = jsondata.word;
+                    document.getElementsByClassName('meaning')[0].innerHTML = jsondata.meaning;
+                    document.getElementsByClassName('sentence')[0].innerHTML = jsondata.sentence;
+                    word_id = jsondata.id;
+                    show_count++;
+                }
+            }));
+    }
 }
 
 function reload_alert() {
@@ -89,19 +200,60 @@ function get_today() {
     const month = dt.getMonth();
     const date = dt.getDate();
     document.getElementsByClassName('current_date')[0].innerHTML = `${year}년 ${month >= 10 ? month : '0' + (month+1)}월 ${date >= 10 ? date : '0' + date}일`;
+    display(false);
+}
+
+function end_stage(isend){
+    if(isend){
+        document.getElementsByClassName("end_of_stage")[0].style.visibility = 'visible';
+        document.getElementsByClassName('english')[0].style.visibility = 'hidden';
+        document.getElementsByClassName('meaning')[0].style.visibility = 'hidden';
+        document.getElementsByClassName('sentence')[0].style.visibility = 'hidden';
+        offset_index = word_id;
+    }
+    else {
+        if (show_count === 0){
+            document.getElementsByClassName("end_of_stage")[0].style.visibility = 'hidden';
+            document.getElementsByClassName('english')[0].style.visibility = 'hidden';
+            document.getElementsByClassName('meaning')[0].style.visibility = 'hidden';
+            document.getElementsByClassName('sentence')[0].style.visibility = 'hidden';
+        }
+        else {
+            document.getElementsByClassName("end_of_stage")[0].style.visibility = 'hidden';
+            document.getElementsByClassName('english')[0].style.visibility = 'visible';
+            document.getElementsByClassName('meaning')[0].style.visibility = 'visible';
+            document.getElementsByClassName('sentence')[0].style.visibility = 'visible';
+        }
+    }
 }
 
 function display(end_of_word) {
     if(end_of_word) {
         document.getElementsByClassName("display")[0].style.visibility = 'visible';
+        document.getElementsByClassName('english')[0].style.visibility = 'hidden';
+        document.getElementsByClassName('meaning')[0].style.visibility = 'hidden';
+        document.getElementsByClassName('sentence')[0].style.visibility = 'hidden';
     }else {
-        document.getElementsByClassName("display")[0].style.visibility = 'hidden';
+        if (show_count === 0){
+            document.getElementsByClassName("display")[0].style.visibility = 'visible';
+            document.getElementsByClassName('english')[0].style.visibility = 'hidden';
+            document.getElementsByClassName('meaning')[0].style.visibility = 'hidden';
+            document.getElementsByClassName('sentence')[0].style.visibility = 'hidden';
+            document.getElementsByClassName("end_of_stage")[0].style.visibility = 'hidden';
+        }
+        else {
+            document.getElementsByClassName("end_of_stage")[0].style.visibility = 'hidden';
+            document.getElementsByClassName("display")[0].style.visibility = 'hidden';
+            document.getElementsByClassName('english')[0].style.visibility = 'visible';
+            document.getElementsByClassName('meaning')[0].style.visibility = 'visible';
+            document.getElementsByClassName('sentence')[0].style.visibility = 'visible';
+        }
     }
 }
 
 function reset_exec() {
+    display(false);
     let status = return_history.pop();
-    console.log(status);
     fetch(`http://127.0.0.1:8000/real_id/total/${status.real_id}/${status.count}`, {
         method:'GET',
         headers:{
@@ -113,5 +265,6 @@ function reset_exec() {
             document.getElementsByClassName('meaning')[0].innerHTML = jsondata.meaning;
             document.getElementsByClassName('sentence')[0].innerHTML = jsondata.sentence;
             word_id = jsondata.id;
+            show_count--;
         }));
 }
