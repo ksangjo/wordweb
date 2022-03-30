@@ -13,22 +13,9 @@ class word_list(SQLModel, table=True):
     memory_count: int = 0
     sentence: Optional[str] = None
     inserted_date: Optional[date] = Field(default=date.today())
+    is_today_visible: bool = False
+    is_total_visible: bool = False
 
-class today(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    word: str
-    meaning: str
-    memory_count: int = 0
-    sentence: Optional[str] = None
-    inserted_date: Optional[date] = Field(default=date.today())
-
-class accumulated(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    word: str
-    meaning: str
-    memory_count: int = 0
-    sentence: Optional[str] = None
-    inserted_date: Optional[date] = Field(default=date.today())
 
 sqlite_file_name = "database.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
@@ -59,7 +46,12 @@ def select_word(session, word_model, index, offset=100000000):
     max_index = len(session.exec(select(word_model)).all())
     
     if len(results) > 0 and index < max_index:
-        return results[0]
+        my_word = results[0]
+        my_word.is_today_visible = True
+        session.add(my_word)
+        session.commit()
+        session.refresh(my_word)
+        return my_word
     else:
         return "NO WORD LEFT"
 
@@ -69,13 +61,15 @@ def len_wordlist(session, word_model):
     return len(results)
 
 def plus_word(session, word_model, index):
-    statement = select(word_list).where(word_list.id == index)
+    statement = select(word_model).where(word_model.id == index)
     results = session.exec(statement).all()
     max_index = len(session.exec(select(word_model)).all())
     
     if index < max_index:
         try:
             my_word = results[0]
+            if my_word.memory_count+1 == 3:
+                my_word.is_today_visible = False
             my_word.memory_count += 1
             session.add(my_word)
             session.commit()
@@ -87,7 +81,7 @@ def plus_word(session, word_model, index):
         return "index out of range"
 
 def reset_word(session, word_model, index):
-    statement = select(word_list).where(word_list.id == index)
+    statement = select(word_model).where(word_model.id == index)
     results = session.exec(statement).all()
     max_index = len(session.exec(select(word_model)).all())
     
@@ -96,6 +90,7 @@ def reset_word(session, word_model, index):
             my_word = results[0]
             previous_count = my_word.memory_count
             my_word.memory_count = 0
+            my_word.is_today_visible = True
             session.add(my_word)
             session.commit()
             session.refresh(my_word)
@@ -106,18 +101,26 @@ def reset_word(session, word_model, index):
         return "index out of range"
 
 def call_real_id(session, word_model, real_id, mem_count):
-    statement = select(word_list).where(word_list.id == real_id)
+    statement = select(word_model).where(word_model.id == real_id)
     results = session.exec(statement).all()
 
     if results:
         my_word = results[0]
         my_word.memory_count = mem_count
+        if mem_count < 3:
+            my_word.is_today_visible = True
         session.add(my_word)
         session.commit()
         session.refresh(my_word)
         return my_word
     else:
         "real id is invalid"
+
+def today_inserted_words(session, word_model):
+    today_date = date.today()
+    statement = select(word_model).where(word_model.is_today_visible == True)
+    results = session.exec(statement).all()
+    return results
 
 def main():
     create_db_and_tables()

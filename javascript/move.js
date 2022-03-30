@@ -37,7 +37,12 @@ function circulating() {
                 'Content-Type': 'application/text'
             }})
         .then((response) => response.text().then(function (text) {
-                if (text === "NO WORD LEFT") {
+                if (!response.ok) {
+                    display(true);
+                return
+                }
+            
+                if (text === "NO WORD LEFT" || text === undefined) {
                     display(true);
                 }
                 else {
@@ -46,13 +51,16 @@ function circulating() {
                     document.getElementsByClassName('english')[0].innerHTML = jsondata.word;
                     document.getElementsByClassName('meaning')[0].innerHTML = jsondata.meaning;
                     document.getElementsByClassName('sentence')[0].innerHTML = jsondata.sentence;
-                    word_id = jsondata.id;
+                    if (jsondata.id) {
+                        word_id = jsondata.id;
+                    }
                 }
             }));
     }
 }
 
 function next_fifty() {
+    offset_index += 50;
     if (show_count % 50 !== 0) {
         return
     }
@@ -86,11 +94,18 @@ function next_fifty() {
                 'Content-Type': 'application/text'
             }})
         .then((response) => response.text().then(function (text) {
+            if (!response.ok) {
+                display(true);
+                return
+            }
+        
                 let jsondata = JSON.parse(text);
                 document.getElementsByClassName('english')[0].innerHTML = jsondata.word;
                 document.getElementsByClassName('meaning')[0].innerHTML = jsondata.meaning;
                 document.getElementsByClassName('sentence')[0].innerHTML = jsondata.sentence;
-                word_id = jsondata.id;
+                if (jsondata.id) {
+                    word_id = jsondata.id;
+                }
                 startup_index = word_id;
                 console.log("startup", word_id);
             }));
@@ -127,7 +142,13 @@ function left_click() {
                 'Content-Type': 'application/text'
             }})
         .then((response) => response.text().then(function (text) {
-                if (text === "NO WORD LEFT") {
+            if (!response.ok) {
+                console.log("끝났니?")
+                display(true);
+                return
+            }
+        
+                if (text === "NO WORD LEFT" || text === undefined) {
                     display(true);
                 }
                 else {
@@ -136,7 +157,9 @@ function left_click() {
                     document.getElementsByClassName('english')[0].innerHTML = jsondata.word;
                     document.getElementsByClassName('meaning')[0].innerHTML = jsondata.meaning;
                     document.getElementsByClassName('sentence')[0].innerHTML = jsondata.sentence;
-                    word_id = jsondata.id;
+                    if (jsondata.id) {
+                        word_id = jsondata.id;
+                    }
                     show_count++;
                 }
             }));
@@ -173,7 +196,12 @@ function right_click() {
                 'Content-Type': 'application/text'
             }})
         .then((response) => response.text().then(function (text) {
-                if (text === "NO WORD LEFT") {
+            if (!response.ok) {
+                display(true);
+                return
+            }
+        
+                if (text === "NO WORD LEFT" || text === undefined) {
                     display(true);
                 }
                 else {
@@ -182,7 +210,9 @@ function right_click() {
                     document.getElementsByClassName('english')[0].innerHTML = jsondata.word;
                     document.getElementsByClassName('meaning')[0].innerHTML = jsondata.meaning;
                     document.getElementsByClassName('sentence')[0].innerHTML = jsondata.sentence;
-                    word_id = jsondata.id;
+                    if (jsondata.id) {
+                        word_id = jsondata.id;
+                    }
                     show_count++;
                 }
             }));
@@ -209,11 +239,13 @@ function end_stage(isend){
         document.getElementsByClassName('english')[0].style.visibility = 'hidden';
         document.getElementsByClassName('meaning')[0].style.visibility = 'hidden';
         document.getElementsByClassName('sentence')[0].style.visibility = 'hidden';
-        offset_index = word_id;
+        if (offset_index >= 100000000) {
+            offset_index = word_id;
+        }
     }
     else {
         if (show_count === 0){
-            document.getElementsByClassName("end_of_stage")[0].style.visibility = 'hidden';
+            document.getElementsByClassName("display")[0].style.visibility = 'visible';
             document.getElementsByClassName('english')[0].style.visibility = 'hidden';
             document.getElementsByClassName('meaning')[0].style.visibility = 'hidden';
             document.getElementsByClassName('sentence')[0].style.visibility = 'hidden';
@@ -264,7 +296,9 @@ function reset_exec() {
             document.getElementsByClassName('english')[0].innerHTML = jsondata.word;
             document.getElementsByClassName('meaning')[0].innerHTML = jsondata.meaning;
             document.getElementsByClassName('sentence')[0].innerHTML = jsondata.sentence;
-            word_id = jsondata.id;
+            if (jsondata.id) {
+                word_id = jsondata.id;
+            }
             show_count--;
         }));
 }

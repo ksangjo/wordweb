@@ -73,10 +73,6 @@ async def home():
 async def len_my_wordlist(whatpage:str):
     if whatpage == "total":
         return len_wordlist(session=get_session(), word_model=word_list)
-    elif whatpage == "today":
-        return len_wordlist(session=get_session(), word_model=today)
-    elif whatpage == "accumulate":
-        return len_wordlist(session=get_session(), word_model=accumulated)
     else:
         return HTTPException(status_code=404, detail="invalid page")
 
@@ -84,10 +80,6 @@ async def len_my_wordlist(whatpage:str):
 async def checked_memorization(whatpage:str, id:int, offset:int=100000000):
     if whatpage == "total":
         return select_word(session=get_session(), word_model=word_list, index=id, offset=offset)
-    elif whatpage == "today":
-        return select_word(session=get_session(), word_model=today, index=id, offset=offset)
-    elif whatpage == "accumulate":
-        return select_word(session=get_session(), word_model=accumulated, index=id, offset=offset)
     else:
         return HTTPException(status_code=404, detail="invalid page")
 
@@ -95,10 +87,6 @@ async def checked_memorization(whatpage:str, id:int, offset:int=100000000):
 async def plus_word_web(whatpage:str, id:int):
     if whatpage == "total":
         return plus_word(session=get_session(), word_model=word_list, index=id)
-    elif whatpage == "today":
-        return plus_word(session=get_session(), word_model=today, index=id)
-    elif whatpage == "accumulate":
-        return plus_word(session=get_session(), word_model=accumulated, index=id)
     else:
         return HTTPException(status_code=404, detail="invalid page")
 
@@ -106,10 +94,6 @@ async def plus_word_web(whatpage:str, id:int):
 async def reset_word_web(whatpage:str, id:int):
     if whatpage == "total":
         return reset_word(session=get_session(), word_model=word_list, index=id)
-    elif whatpage == "today":
-        return reset_word(session=get_session(), word_model=today, index=id)
-    elif whatpage == "accumulate":
-        return reset_word(session=get_session(), word_model=accumulated, index=id)
     else:
         return HTTPException(status_code=404, detail="invalid page")
 
@@ -117,10 +101,13 @@ async def reset_word_web(whatpage:str, id:int):
 async def calling_real_id(whatpage:str, id:int, memory_count:int):
     if whatpage == "total":
         return call_real_id(session=get_session(), word_model=word_list, real_id=id, mem_count = memory_count)
-    elif whatpage == "today":
-        return call_real_id(session=get_session(), word_model=today, real_id=id, mem_count = memory_count)
-    elif whatpage == "accumulate":
-        return call_real_id(session=get_session(), word_model=accumulated, real_id=id, mem_count = memory_count)
+    else:
+        return HTTPException(status_code=404, detail="invalid page")
+
+@app.get("/today_word_list/{whatpage}")
+async def today_word_list(whatpage:str):
+    if whatpage == "total":
+        return today_inserted_words(session=get_session(), word_model=word_list)
     else:
         return HTTPException(status_code=404, detail="invalid page")
 
