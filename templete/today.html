@@ -1,42 +1,33 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet"/>
-    <link href="/templete/today.css" rel="stylesheet"/>
-    <title>Document</title></head>
-    <script src="/javascript/move.js"></script>
-<body onload="get_today()">
-<div class="today">
-    <button class="web_name" onclick="location.href='first_page'">편입영어</button>
-    <span class="current_date"></span>
-    <span class="title_line"></span>
-    <img class="home" src="http://127.0.0.1:8000/home" onclick="location.href='first_page'"></img>
-    <span class="page_title"># 오늘 추가한 단어🏷️</span>
-    <span class="underText">24시간 뒤에 모두 사라집니다</span>
-    <div class="sendTotal_button"></div>
-    <span class="sendTotal_text">누적 단어장에 모두 보내기</span>
-    <div class="resetToday_button"></div>
-    <span class="resetToday_text">RESET TODAY</span>
-    <button class="toTodayReview" onclick="location.href='today_review'"></button>
-    <button class="toTodayReview_text" onclick="location.href='today_review'">오늘 추가한 단어 다시 학습하기</button>
-    <div class="word_today">
-    <span class="e1">English</span><span class="e2">English</span><span class="e3">English</span><span
-        class="e4">English</span><span class="e5">English</span><span class="e6">English</span><span
-        class="e7">English</span><span class="e8">English</span><span class="e9">English</span><span
-        class="e10">English</span><span class="e11">English</span><span class="e12">English</span><span
-        class="e13">English</span><span class="e14">English</span><span class="e15">English</span><span
-        class="e16">English</span><span class="e17">English</span><span class="e18">English</span><span
-        class="e19">English</span><span class="e20">English</span><span class="m1">한글</span><span class="m2">한글</span><span
-        class="m3">한글</span><span class="m4">한글</span><span class="m5">한글</span><span class="m6">한글</span><span
-        class="m7">한글</span><span class="m8">한글</span><span class="m9">한글</span><span class="m10">한글</span><span
-        class="m11">한글</span><span class="m12">한글</span><span class="m13">한글</span><span class="m14">한글</span><span
-        class="m15">한글</span><span class="m16">한글</span><span class="m17">한글</span><span class="m18">한글</span><span
-        class="m19">한글</span><span class="m20">한글</span><span class="sen1">sentence</span><span class="sen2">sentence</span><span
-        class="sen3">sentence</span><span class="sen4">sentence</span><span class="sen5">sentence</span><span class="sen6">sentence</span><span
-        class="sen7">sentence</span><span class="sen8">sentence</span><span class="sen9">sentence</span><span class="sen10">sentence</span><span
-        class="sen11">sentence</span><span class="sen12">sentence</span><span class="sen13">sentence</span><span
-        class="sen14">sentence</span><span class="sen15">sentence</span><span class="sen16">sentence</span><span
-        class="sen17">sentence</span><span class="sen18">sentence</span><span class="sen19">sentence</span><span class="sen20">sentence</span></div>
-</div>
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet" />
+    <link href="/templete/today.css" rel="stylesheet" />
+    <title>Document</title>
+</head>
+<script src="/javascript/today.js"></script>
+
+<body onload="init_loader()">
+    <div class="today">
+        <button class="web_name" onclick="location.href='first_page'">편입영어</button>
+        <span class="current_date"></span>
+        <span class="title_line"></span>
+        <img class="home" src="http://127.0.0.1:8000/home" onclick="location.href='first_page'"></img>
+        <span class="page_title"># 오늘 추가한 단어🏷️</span>
+        <span class="underText">24시간 뒤에 모두 사라집니다</span>
+        <div class="sendTotal_button"></div>
+        <span class="sendTotal_text">누적 단어장에 모두 보내기</span>
+        <div class="resetToday_button"></div>
+        <span class="resetToday_text">RESET TODAY</span>
+        <button class="toTodayReview" onclick="location.href='today_review'"></button>
+        <button class="toTodayReview_text" onclick="location.href='today_review'">오늘 추가한 단어 다시 학습하기</button>
+        <div class="word_today">
+            <span class="e1">English</span>
+            <span class="m1">한글</span>
+            <span class="sen1">sentence</span>
+        </div>
+    </div>
 </body>
+
 </html>
