@@ -1,8 +1,10 @@
 let word_id = 0;
 let return_history = [];
 let show_count = 0;
+let o_count = 0;
 let startup_index = 0;
 let offset_index = 100000000;
+const one_turn = 50;
 
 function circulating() {
     show_count = 0;
@@ -11,13 +13,13 @@ function circulating() {
     headers:{
         'Content-Type': 'application/text'
     }}).text);
-    if (show_count !== 0 && (show_count % 50 === 0 || word_id >= max_len)) {
+    if (show_count !== 0 && (show_count % one_turn === 0 || word_id >= max_len)) {
         end_stage(true);
     }
     else {
         end_stage(false);
     }
-    if (word_id > 0 && show_count % 50 !== 0) {
+    if (word_id > 0 && show_count % one_turn !== 0) {
         fetch(`http://127.0.0.1:8000/plus/total/${word_id}`, {
             method:'GET',
         headers:{
@@ -30,7 +32,7 @@ function circulating() {
     }
     show_count++;
     word_id = startup_index-1;
-    if(show_count % 50 !== 0) {
+    if(show_count % one_turn !== 0) {
         fetch(`http://127.0.0.1:8000/memorization/total/${word_id}/${offset_index}`, {
             method:'GET',
             headers:{
@@ -60,8 +62,8 @@ function circulating() {
 }
 
 function next_fifty() {
-    offset_index += 50;
-    if (show_count % 50 !== 0) {
+    offset_index += one_turn;
+    if (show_count % one_turn !== 0) {
         return
     }
     let max_len = Number(fetch(`http://127.0.0.1:8000/len/total`, {
@@ -70,13 +72,13 @@ function next_fifty() {
         'Content-Type': 'application/text'
     }}).text);
     show_count++;
-    if (show_count !== 0 && (show_count % 50 === 0 || word_id >= max_len)) {
+    if (show_count !== 0 && o_count === one_turn*3) {
         display(true);
     }
     else {
         display(false);
     }
-    if (word_id > 0 && show_count % 50 !== 0) {
+    if (word_id > 0 && show_count % one_turn !== 0) {
         fetch(`http://127.0.0.1:8000/plus/total/${word_id}`, {
             method:'GET',
         headers:{
@@ -87,7 +89,7 @@ function next_fifty() {
             return_history.push(previous_status);
         }));
     }
-    if(show_count % 50 !== 0) {
+    if(show_count % one_turn !== 0) {
         fetch(`http://127.0.0.1:8000/memorization/total/${word_id}/${offset_index}`, {
             method:'GET',
             headers:{
@@ -118,13 +120,13 @@ function left_click() {
     headers:{
         'Content-Type': 'application/text'
     }}).text);
-    if (show_count !== 0 && (show_count % 50 === 0 || word_id >= max_len)) {
+    if (show_count !== 0 && (show_count % one_turn === 0 || word_id >= max_len)) {
         end_stage(true);
     }
     else {
         end_stage(false);
     }
-    if (word_id > 0 && show_count % 50 !== 0) {
+    if (word_id > 0 && show_count % one_turn !== 0) {
         fetch(`http://127.0.0.1:8000/plus/total/${word_id}`, {
             method:'GET',
         headers:{
@@ -133,9 +135,10 @@ function left_click() {
         .then((response) => response.text().then(function (text) {
             let previous_status = JSON.parse(text)
             return_history.push(previous_status);
+            o_count++;
         }));
     }
-    if(show_count % 50 !== 0) {
+    if(show_count % one_turn !== 0) {
         fetch(`http://127.0.0.1:8000/memorization/total/${word_id}/${offset_index}`, {
             method:'GET',
             headers:{
@@ -143,7 +146,6 @@ function left_click() {
             }})
         .then((response) => response.text().then(function (text) {
             if (!response.ok) {
-                console.log("끝났니?")
                 display(true);
                 return
             }
@@ -172,13 +174,13 @@ function right_click() {
     headers:{
         'Content-Type': 'application/text'
     }}).text);
-    if (show_count !== 0 && (show_count % 50 === 0 || word_id >= max_len)) {
+    if (show_count !== 0 && (show_count % one_turn === 0 || word_id >= max_len)) {
         end_stage(true);
     }
     else {
         end_stage(false);
     }
-    if (word_id > 0 && show_count % 50 !== 0) {
+    if (word_id > 0 && show_count % one_turn !== 0) {
         fetch(`http://127.0.0.1:8000/reset/total/${word_id}`, {
             method:'GET',
         headers:{
@@ -187,9 +189,10 @@ function right_click() {
         .then((response) => response.text().then(function (text) {
             let previous_status = JSON.parse(text)
             return_history.push(previous_status);
+            o_count -= previous_status.count;
         }));
     }
-    if(show_count % 50 !== 0) {
+    if(show_count % one_turn !== 0) {
         fetch(`http://127.0.0.1:8000/memorization/total/${word_id}/${offset_index}`, {
             method:'GET',
             headers:{
