@@ -81,6 +81,21 @@ body {
   border-bottom: 4px solid rgba(0, 0, 0, 1);
   margin: 10px;
 }
+.end_of_stage {
+  width: 400px;
+  color: rgba(0, 0, 0, 0.81);
+  position: absolute;
+  top: 405px;
+  left: 750px;
+  font-family: 'OTWelcomeRA';
+  font-weight: Regular;
+  font-size: 28px;
+  opacity: 1;
+  text-align: center;
+  padding: 0;
+  border: 0;
+  background: none;
+}
 .right_button {
   width: 760px;
   height: 360px;
@@ -194,7 +209,7 @@ body {
   left: 839px;
   font-family: 'OTWelcomeRA';
   font-weight: Regular;
-  font-size: 25px;
+  font-size: 30px;
   opacity: 1;
   text-align: center;
   padding: 0;
