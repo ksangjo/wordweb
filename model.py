@@ -12,9 +12,9 @@ class word_list(SQLModel, table=True):
     meaning: str
     memory_count: int = 0
     sentence: Optional[str] = None
-    inserted_date: Optional[date] = Field(default=date.today())
-    is_today_visible: bool = False
+    inserted_date: Optional[str] = None
     is_total_visible: bool = False
+    all_done = False
 
 
 sqlite_file_name = "database.db"
@@ -47,7 +47,6 @@ def select_word(session, word_model, index, offset=100000000):
     
     if len(results) > 0 and index < max_index:
         my_word = results[0]
-        my_word.is_today_visible = True
         session.add(my_word)
         session.commit()
         session.refresh(my_word)
@@ -60,6 +59,19 @@ def len_wordlist(session, word_model):
     results = session.exec(statement).all()
     return len(results)
 
+def setting_date(session, word_model):
+    statement = select(word_model).where(word_model.memory_count < 3).limit(50)
+    results = session.exec(statement).all()
+    try:
+        for word in results:
+            word.inserted_date = date.today().isoformat()
+            session.add(word)
+        session.commit()
+        session.refresh()
+        return True
+    except:
+        return False
+
 def plus_word(session, word_model, index):
     statement = select(word_model).where(word_model.id == index)
     results = session.exec(statement).all()
@@ -68,8 +80,6 @@ def plus_word(session, word_model, index):
     if index < max_index:
         try:
             my_word = results[0]
-            if my_word.memory_count+1 == 3:
-                my_word.is_today_visible = False
             my_word.memory_count += 1
             session.add(my_word)
             session.commit()
@@ -90,7 +100,6 @@ def reset_word(session, word_model, index):
             my_word = results[0]
             previous_count = my_word.memory_count
             my_word.memory_count = 0
-            my_word.is_today_visible = True
             session.add(my_word)
             session.commit()
             session.refresh(my_word)
@@ -107,8 +116,6 @@ def call_real_id(session, word_model, real_id, mem_count):
     if results:
         my_word = results[0]
         my_word.memory_count = mem_count
-        if mem_count < 3:
-            my_word.is_today_visible = True
         session.add(my_word)
         session.commit()
         session.refresh(my_word)
@@ -118,9 +125,42 @@ def call_real_id(session, word_model, real_id, mem_count):
 
 def today_inserted_words(session, word_model):
     today_date = date.today()
-    statement = select(word_model).where(word_model.is_today_visible == True)
+    statement = select(word_model).where(word_model.memory_count < 3).where(today_date.isoformat() == word_model.inserted_date).where(word_model.is_total_visible == False).where(word_model.all_done == False)
     results = session.exec(statement).all()
     return results
+
+def today_word_to_total_word(session, word_model):
+    today_date = date.today()
+    statement = select(word_model).where(word_model.memory_count < 3).where(today_date.isoformat() == word_model.inserted_date).where(word_model.all_done == False)
+    results = session.exec(statement).all()
+    try:
+        for word in results:
+            word.is_total_visible = True
+            session.add(word)
+        session.commit()
+        session.refresh()
+        return True
+    except:
+        return False
+
+
+def today_word_to_done(session, word_model):
+    today_date = date.today()
+    statement = select(word_model).where(word_model.memory_count < 3).where(today_date.isoformat() == word_model.inserted_date).where(word_model.is_total_visible == False).where(word_model.all_done == False)
+    results = session.exec(statement).all()
+    print("---"*50)
+    print(results)
+    print("---"*50)
+    try:
+        for word in results:
+            word.all_done = True
+            session.add(word)
+            print("hello")
+        session.commit()
+        session.refresh(results)
+        return True
+    except:
+        return False
 
 def main():
     create_db_and_tables()

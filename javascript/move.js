@@ -79,6 +79,12 @@ function next_fifty() {
   is_end_stage = false;
   show_count = 1;
   o_count = 0;
+  fetch(`http://127.0.0.1:8000/setting_date/total`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/text",
+      },
+    }).then((response) => console.log(response));
   // if (show_count % one_turn !== 0) {
   //     return
   // }

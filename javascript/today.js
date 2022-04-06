@@ -8,7 +8,6 @@ function create_array() {
             list_start_point = document.getElementsByClassName('word_today')[0]
             let jsondatas = JSON.parse(myjsonarray)
             for (let i = 0; i < jsondatas.length; i++){
-                console.log(jsondatas[i]);
                 let row = `<span class="e${i+1}" style = "width: 420px;
                 color: rgba(0, 0, 0, 1);
                 position: absolute;
@@ -49,6 +48,31 @@ function create_array() {
             }
         }));
 }
+
+function go_total() {
+    fetch(`http://127.0.0.1:8000/today_to_total/total/`, {
+        method:'GET',
+        headers:{
+            'Content-Type': 'application/text'
+        }})
+        .then((response) => {
+            console.log(response);
+            document.location.reload(true);
+        })
+}
+
+function go_done() {
+    fetch(`http://127.0.0.1:8000/today_to_done/total`, {
+        method:'GET',
+        headers:{
+            'Content-Type': 'application/text'
+        }})
+        .then((response) => {
+            console.log(response);
+            document.location.reload(true);
+        })
+}
+
 
 function get_today() {
     var dt = new Date();
