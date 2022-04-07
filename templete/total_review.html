@@ -4,7 +4,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet" />
     <link href="/templete/total_review.css" rel="stylesheet" />
     <title>Document</title>
-    <script src="/javascript/move.js"></script>
+    <script src="/javascript/total_review.js"></script>
 </head>
 <body>
 <div class="total_review">
@@ -16,13 +16,14 @@
     <button class="left_button" onclick="left_click()"></button>
     <button class="right_button" onclick="right_click()"></button>
     <div class="word_card"></div>
-    <p class="english">English</p>
-    <p class="meaning">한국어 뜻</p>
-    <p class="sentence">sentence in English</p>
+    <p class="english"></p>
+    <p class="meaning"></p>
+    <p class="sentence"></p>
     <img class="O_button" src="http://127.0.0.1:8000/o_button" onclick="left_click()"></img>
     <img class="X_button" src="http://127.0.0.1:8000/x_button" onclick="right_click()"></img>
     <img class="return_button" src="http://127.0.0.1:8000/return_button"></img>
-    <button class="display">단어 50개 추가 받기</button>
+    <button class="end_of_stage" onclick="circulating()">다 봤습니다 🔁</button>
+    <button class="display" onclick="next_fifty()">학습 시작</button>
     <img class="home" src="http://127.0.0.1:8000/home" onclick="location.href='first_page'"></img>
     <span class="bottom_letter">영어엔 단어가 80%</span>
     <button class="today_button" onclick="location.href='today'"></button>
