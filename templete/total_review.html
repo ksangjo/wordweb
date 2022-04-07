@@ -6,7 +6,7 @@
     <title>Document</title>
     <script src="/javascript/total_review.js"></script>
 </head>
-<body>
+<body onload="first_load()">
 <div class="total_review">
     <form method="GET">
         <button class="web_name" onclick="reload_alert()">편입영어</button>
@@ -24,6 +24,7 @@
     <img class="return_button" src="http://127.0.0.1:8000/return_button"></img>
     <button class="end_of_stage" onclick="circulating()">다 봤습니다 🔁</button>
     <button class="display" onclick="start_total()">학습 시작</button>
+    <span class="all_clear">끝!! 이제 쉬러가자~~</span>
     <img class="home" src="http://127.0.0.1:8000/home" onclick="location.href='first_page'"></img>
     <span class="bottom_letter">영어엔 단어가 80%</span>
     <button class="today_button" onclick="location.href='today'"></button>

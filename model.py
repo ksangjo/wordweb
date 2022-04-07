@@ -47,15 +47,17 @@ def select_word(session, word_model, index, offset=100000000):
     
     if len(results) > 0 and index < max_index:
         my_word = results[0]
-        session.add(my_word)
-        session.commit()
-        session.refresh(my_word)
         return my_word
     else:
         return "NO WORD LEFT"
 
 def len_wordlist(session, word_model):
     statement = select(word_model).where(word_model.memory_count < 3).where(word_model.is_total_visible == False)
+    results = session.exec(statement).all()
+    return len(results)
+
+def total_review_len_wordlist(session, word_model):
+    statement = select(word_model).where(word_model.memory_count < 3).where(word_model.is_total_visible == True)
     results = session.exec(statement).all()
     return len(results)
 
@@ -163,6 +165,17 @@ def total_inserted_words(session, word_model):
     results = session.exec(statement).all()
     return results
 
+def total_review_selector(session, word_model, index):
+    statement = select(word_model).where(word_model.memory_count < 3).where(word_list.id > index).where(word_model.is_total_visible == True).where(word_model.all_done == False)
+    results = session.exec(statement).all()
+    max_index = len(session.exec(select(word_model).where(word_model.is_total_visible == True)).all())
+    
+    if len(results) > 0 and index < max_index:
+        my_word = results[0]
+        return my_word
+    else:
+        return "NO WORD LEFT"
+
 def total_word_study(session, word_model):
     statement = select(word_model).where(word_model.is_total_visible == True)
     results = session.exec(statement).all()
@@ -181,7 +194,7 @@ def total_word_to_done(session, word_model):
     results = session.exec(statement).all()
     try:
         for word in results:
-            word.memory_count = 2
+            word.memory_count = 3
             word.all_done = True
             word.is_total_visible = False
             session.add(word)

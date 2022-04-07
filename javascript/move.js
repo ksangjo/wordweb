@@ -101,19 +101,6 @@ function next_fifty() {
   } else {
     display(false);
   }
-//   if (word_id > 0 && show_count % one_turn !== 0) {
-//     fetch(`http://127.0.0.1:8000/plus/total/${word_id}`, {
-//       method: "GET",
-//       headers: {
-//         "Content-Type": "application/text",
-//       },
-//     }).then((response) =>
-//       response.text().then(function (text) {
-//         let previous_status = JSON.parse(text);
-//         return_history.push(previous_status);
-//       })
-//     );
-//   }
   if (show_count % one_turn !== 0) {
     fetch(
       `http://127.0.0.1:8000/memorization/total/${word_id}/${offset_index}`,
