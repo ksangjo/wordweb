@@ -76,6 +76,16 @@ async def len_my_wordlist(whatpage:str):
     else:
         return HTTPException(status_code=404, detail="invalid page")
 
+@app.get("/setting_date/{whatpage}")
+async def set_date(whatpage:str):
+    if whatpage == "total":
+        if setting_date(get_session(), word_list):
+            return True
+        else:
+            return False
+    else:
+        return HTTPException(status_code=404, detail="invalid page")
+
 @app.get("/memorization/{whatpage}/{id}/{offset}")
 async def checked_memorization(whatpage:str, id:int, offset:int=100000000):
     if whatpage == "total":
@@ -110,6 +120,27 @@ async def today_word_list(whatpage:str):
         return today_inserted_words(session=get_session(), word_model=word_list)
     else:
         return HTTPException(status_code=404, detail="invalid page")
+
+@app.get("/today_to_total/{whatpage}")
+async def today_to_total(whatpage:str):
+    if whatpage == "total":
+        if today_word_to_total_word(session=get_session(), word_model=word_list):
+            return True
+        else:
+            return HTTPException(status_code=404, detail="something wrong")
+    else:
+        return HTTPException(status_code=404, detail="invalid page")
+
+@app.get("/today_to_done/{whatpage}")
+async def today_to_done(whatpage:str):
+    if whatpage == "total":
+        if today_word_to_done(session=get_session(), word_model=word_list):
+            return True
+        else:
+            return HTTPException(status_code=404, detail="something wrong")
+    else:
+        return HTTPException(status_code=404, detail="invalid page")
+
 
 @app.get("/", response_class=RedirectResponse)
 def root() -> str:
