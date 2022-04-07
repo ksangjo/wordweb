@@ -158,6 +158,16 @@ async def total_to_done(whatpage:str):
     else:
         return HTTPException(status_code=404, detail="invalid page")
 
+@app.get("/total_to_study/{whatpage}")
+async def total_to_study(whatpage:str):
+    if whatpage == "total":
+        if total_word_study(session=get_session(), word_model=word_list):
+            return True
+        else:
+            return HTTPException(status_code=404, detail="something wrong")
+    else:
+        return HTTPException(status_code=404, detail="invalid page")
+
 @app.get("/", response_class=RedirectResponse)
 def root() -> str:
     return "/first_page"

@@ -61,6 +61,19 @@ function go_done() {
         })
 }
 
+function go_study_total() {
+    fetch(`http://127.0.0.1:8000/total_to_study/total`, {
+        method:'GET',
+        headers:{
+            'Content-Type': 'application/text'
+        }})
+        .then((response) => {
+            console.log(response);
+            document.location.reload(true);
+            location.href='http://127.0.0.1:8000/total_review';
+        })
+}
+
 function get_today() {
     var dt = new Date();
     const year = dt.getFullYear();
