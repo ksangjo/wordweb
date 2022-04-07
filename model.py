@@ -41,7 +41,7 @@ def word_insert():
             session.commit()
 
 def select_word(session, word_model, index, offset=100000000):
-    statement = select(word_model).where(word_model.memory_count < 3).where(word_list.id > index).where(word_list.id <= offset)
+    statement = select(word_model).where(word_model.memory_count < 3).where(word_list.id > index).where(word_list.id <= offset).where(word_model.is_total_visible == False)
     results = session.exec(statement).all()
     max_index = len(session.exec(select(word_model)).all())
     
@@ -55,12 +55,12 @@ def select_word(session, word_model, index, offset=100000000):
         return "NO WORD LEFT"
 
 def len_wordlist(session, word_model):
-    statement = select(word_model).where(word_model.memory_count < 3)
+    statement = select(word_model).where(word_model.memory_count < 3).where(word_model.is_total_visible == False)
     results = session.exec(statement).all()
     return len(results)
 
 def setting_date(session, word_model):
-    statement = select(word_model).where(word_model.memory_count < 3).limit(50)
+    statement = select(word_model).where(word_model.memory_count < 3).where(word_model.is_total_visible == False).limit(50)
     results = session.exec(statement).all()
     try:
         for word in results:
@@ -135,7 +135,6 @@ def today_word_to_total_word(session, word_model):
     results = session.exec(statement).all()
     try:
         for word in results:
-            word.memory_count = 3
             word.is_total_visible = True
             session.add(word)
         session.commit()
@@ -163,6 +162,19 @@ def total_inserted_words(session, word_model):
     statement = select(word_model).where(word_model.is_total_visible == True)
     results = session.exec(statement).all()
     return results
+
+def total_word_study(session, word_model):
+    statement = select(word_model).where(word_model.is_total_visible == True)
+    results = session.exec(statement).all()
+    try:
+        for word in results:
+            word.memory_count = 0
+            session.add(word)
+        session.commit()
+        session.refresh(results)
+        return True
+    except:
+        return False
 
 def total_word_to_done(session, word_model):
     statement = select(word_model).where(word_model.is_total_visible == True)
