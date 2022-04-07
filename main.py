@@ -141,6 +141,22 @@ async def today_to_done(whatpage:str):
     else:
         return HTTPException(status_code=404, detail="invalid page")
 
+@app.get("/total_word_list/{whatpage}")
+async def total_word_list(whatpage:str):
+    if whatpage == "total":
+        return total_inserted_words(session=get_session(), word_model=word_list)
+    else:
+        return HTTPException(status_code=404, detail="invalid page")
+
+@app.get("/total_to_done/{whatpage}")
+async def total_to_done(whatpage:str):
+    if whatpage == "total":
+        if total_word_to_done(session=get_session(), word_model=word_list):
+            return True
+        else:
+            return HTTPException(status_code=404, detail="something wrong")
+    else:
+        return HTTPException(status_code=404, detail="invalid page")
 
 @app.get("/", response_class=RedirectResponse)
 def root() -> str:

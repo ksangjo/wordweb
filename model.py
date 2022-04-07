@@ -135,6 +135,7 @@ def today_word_to_total_word(session, word_model):
     results = session.exec(statement).all()
     try:
         for word in results:
+            word.memory_count = 3
             word.is_total_visible = True
             session.add(word)
         session.commit()
@@ -143,19 +144,35 @@ def today_word_to_total_word(session, word_model):
     except:
         return False
 
-
 def today_word_to_done(session, word_model):
     today_date = date.today()
     statement = select(word_model).where(word_model.memory_count < 3).where(today_date.isoformat() == word_model.inserted_date).where(word_model.is_total_visible == False).where(word_model.all_done == False)
     results = session.exec(statement).all()
-    print("---"*50)
-    print(results)
-    print("---"*50)
     try:
         for word in results:
+            word.memory_count = 3
             word.all_done = True
             session.add(word)
-            print("hello")
+        session.commit()
+        session.refresh(results)
+        return True
+    except:
+        return False
+
+def total_inserted_words(session, word_model):
+    statement = select(word_model).where(word_model.is_total_visible == True)
+    results = session.exec(statement).all()
+    return results
+
+def total_word_to_done(session, word_model):
+    statement = select(word_model).where(word_model.is_total_visible == True)
+    results = session.exec(statement).all()
+    try:
+        for word in results:
+            word.memory_count = 2
+            word.all_done = True
+            word.is_total_visible = False
+            session.add(word)
         session.commit()
         session.refresh(results)
         return True
