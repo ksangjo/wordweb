@@ -76,6 +76,13 @@ async def len_my_wordlist(whatpage:str):
     else:
         return HTTPException(status_code=404, detail="invalid page")
 
+@app.get("/total_review_len/{whatpage}")
+async def total_review_len_total_wordlist(whatpage:str):
+    if whatpage == "total":
+        return total_review_len_wordlist(session=get_session(), word_model=word_list)
+    else:
+        return HTTPException(status_code=404, detail="invalid page")
+
 @app.get("/setting_date/{whatpage}")
 async def set_date(whatpage:str):
     if whatpage == "total":
@@ -90,6 +97,13 @@ async def set_date(whatpage:str):
 async def checked_memorization(whatpage:str, id:int, offset:int=100000000):
     if whatpage == "total":
         return select_word(session=get_session(), word_model=word_list, index=id, offset=offset)
+    else:
+        return HTTPException(status_code=404, detail="invalid page")
+
+@app.get("/total_review_memorization/{whatpage}/{id}")
+async def checked_total_review_memorization(whatpage:str, id:int):
+    if whatpage == "total":
+        return total_review_selector(session=get_session(), word_model=word_list, index=id)
     else:
         return HTTPException(status_code=404, detail="invalid page")
 
