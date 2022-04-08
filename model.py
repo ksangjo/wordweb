@@ -161,14 +161,14 @@ def today_word_to_done(session, word_model):
         return False
 
 def total_inserted_words(session, word_model):
-    statement = select(word_model).where(word_model.is_total_visible == True)
+    statement = select(word_model).where(word_model.is_total_visible == True).where(word_model.memory_count < 3)
     results = session.exec(statement).all()
     return results
 
 def total_review_selector(session, word_model, index):
     statement = select(word_model).where(word_model.memory_count < 3).where(word_list.id > index).where(word_model.is_total_visible == True).where(word_model.all_done == False)
     results = session.exec(statement).all()
-    max_index = len(session.exec(select(word_model).where(word_model.is_total_visible == True)).all())
+    max_index = len(session.exec(select(word_model).where(word_model.is_total_visible == True).where(word_model.memory_count < 3)).all())
     
     if len(results) > 0 and index < max_index:
         my_word = results[0]

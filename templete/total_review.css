@@ -1,6 +1,8 @@
 * {
   box-sizing: border-box;
-  overflow: hidden;
+}
+::-webkit-scrollbar {
+  display: none;
 }
 @font-face {
   font-family: 'ROKAFSansBold';
@@ -17,13 +19,12 @@
   font-style: normal;
 }
 body {
-  font-size: 14px;
-  width: 100vw;
+  width: 1600px;
   height: 900px;
 }
 .total_review {
   width: 100%;
-  height: 900px;
+  height: 100%;  
   background: rgba(255, 255, 255, 1);
   padding: 10px 10px;
   margin: 0px;
@@ -31,7 +32,6 @@ body {
   position: relative;
   top: 0px;
   left: 0px;
-  overflow: hidden;
 }
 .web_name {
   width: 180px;
@@ -175,14 +175,14 @@ body {
   left: 1155px;
 }
 .display {
-  width: 241px;
-  color: rgba(37, 37, 37, 0.8100000023841858);
+  width: 300px;
+  color: rgba(0, 0, 0, 0.81);
   position: absolute;
   top: 409px;
-  left: 839px;
+  left: 805px;
   font-family: 'OTWelcomeRA';
-  font-weight: Regular;
-  font-size: 25px;
+  font-weight: bold;
+  font-size: 30px;
   opacity: 1;
   text-align: center;
   padding: 0;
@@ -196,8 +196,23 @@ body {
   top: 405px;
   left: 750px;
   font-family: 'OTWelcomeRA';
-  font-weight: Regular;
+  font-weight: bold;
   font-size: 28px;
+  opacity: 1;
+  text-align: center;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+.all_clear {
+  width: 400px;
+  color: rgba(0, 0, 0, 0.81);
+  position: absolute;
+  top: 415px;
+  left: 750px;
+  font-family: 'OTWelcomeRA';
+  font-weight: bold;
+  font-size: 25px;
   opacity: 1;
   text-align: center;
   padding: 0;
