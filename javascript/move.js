@@ -6,7 +6,7 @@ let startup_index = 0;
 let offset_index = 100000000;
 let is_end_stage = false;
 const one_turn = 50;
-
+//abcd
 function circulating() {
   show_count = 0;
   is_end_stage = false;
