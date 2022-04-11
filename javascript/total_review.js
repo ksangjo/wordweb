@@ -1,3 +1,5 @@
+import { display } from './all_share.js';
+
 let word_id = 0;
 let return_history = [];
 let show_count = 0;
@@ -41,14 +43,14 @@ function circulating() {
     ).then((response) =>
       response.text().then(function (text) {
         if (!response.ok) {
-          display(true);
+          display(true, document, show_count);
           return;
         }
 
         if (text === "NO WORD LEFT" || text === undefined) {
-          display(true);
+          display(true, document, show_count);
         } else {
-          display(false);
+          display(false, document, show_count);
           let jsondata = JSON.parse(text);
           document.getElementsByClassName("english")[0].innerHTML =
             jsondata.word;
@@ -70,9 +72,9 @@ function start_total() {
   show_count = 1;
   o_count = 0;
   if (show_count !== 0 && o_count >= one_turn * 3) {
-    display(true);
+    display(true, document, show_count);
   } else {
-    display(false);
+    display(false, document, show_count);
   }
   if (show_count % one_turn !== 0) {
     fetch(
@@ -86,7 +88,7 @@ function start_total() {
     ).then((response) =>
       response.text().then(function (text) {
         if (!response.ok) {
-          display(true);
+          display(true, document, show_count);
           return;
         }
 
@@ -129,10 +131,10 @@ async function left_click() {
   if (show_count !== 0 && o_count >= one_turn * 3) {
     //display
     console.log("hey1");
-    display(true);
+    display(true, document, show_count);
     return;
   } else {
-    display(false);
+    display(false, document, show_count);
   }
   if (show_count !== 0 && show_count % one_turn === 0 && o_count < one_turn * 3) {
     //end stage
@@ -155,16 +157,16 @@ async function left_click() {
     ).then((response) =>
       response.text().then(function (text) {
         if (!response.ok) {
-          display(true);
+          display(true, document, show_count);
           return;
         }
         let jsondata = JSON.parse(text);
         if (text === "NO WORD LEFT"){
-            display(true);
+            display(true, document, show_count);
           } else if (jsondata.word === undefined) {
               end_stage(true);
           }else {
-            display(false);
+            display(false, document, show_count);
           
           document.getElementsByClassName("english")[0].innerHTML =
             jsondata.word;
@@ -196,10 +198,10 @@ async function right_click() {
   } 
   if (show_count !== 0 && o_count >= one_turn * 3) {
     //display
-    display(true);
+    display(true, document, show_count);
     return;
   } else {
-    display(false);
+    display(false, document, show_count);
   }
   if (show_count !== 0 && show_count % one_turn === 0) {
     //end stage
@@ -221,16 +223,16 @@ async function right_click() {
     ).then((response) =>
       response.text().then(function (text) {
         if (!response.ok) {
-          display(true);
+          display(true, document, show_count);
           return;
         }
         let jsondata = JSON.parse(text);
         if (text === "NO WORD LEFT"){
-          display(true);
+          display(true, document, show_count);
         } else if (jsondata.word === undefined) {
             end_stage(true);
         }else {
-          display(false);
+          display(false, document, show_count);
           
           document.getElementsByClassName("english")[0].innerHTML =
             jsondata.word;
@@ -285,42 +287,8 @@ function end_stage(isend) {
   }
 }
 
-function display(end_of_word) {
-  if (end_of_word) {
-    document.getElementsByClassName("display")[0].style.visibility = "visible";
-    document.getElementsByClassName("english")[0].style.visibility = "hidden";
-    document.getElementsByClassName("meaning")[0].style.visibility = "hidden";
-    document.getElementsByClassName("sentence")[0].style.visibility = "hidden";
-    if(o_count >= 3 * one_turn) {
-        document.getElementsByClassName("display")[0].style.visibility = "hidden";
-        document.getElementsByClassName("all_clear")[0].style.visibility = "visible";
-    }
-  } else {
-    if (show_count === 0) {
-      document.getElementsByClassName("display")[0].style.visibility =
-        "visible";
-      document.getElementsByClassName("english")[0].style.visibility = "hidden";
-      document.getElementsByClassName("meaning")[0].style.visibility = "hidden";
-      document.getElementsByClassName("sentence")[0].style.visibility =
-        "hidden";
-      document.getElementsByClassName("end_of_stage")[0].style.visibility =
-        "hidden";
-    } else {
-      document.getElementsByClassName("end_of_stage")[0].style.visibility =
-        "hidden";
-      document.getElementsByClassName("display")[0].style.visibility = "hidden";
-      document.getElementsByClassName("english")[0].style.visibility =
-        "visible";
-      document.getElementsByClassName("meaning")[0].style.visibility =
-        "visible";
-      document.getElementsByClassName("sentence")[0].style.visibility =
-        "visible";
-    }
-  }
-}
-
 function reset_exec() {
-  display(false);
+  display(false, document, show_count);
   let status = return_history.pop();
   fetch(
     `http://127.0.0.1:8000/real_id/total/${status.real_id}/${status.count}`,
@@ -359,6 +327,10 @@ function first_load() {
         ).then(response => {
             one_turn = Number(response);
         });
-    display(false);
+    display(false, document, show_count);
     document.getElementsByClassName("all_clear")[0].style.visibility = "hidden";
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    first_load();
+})

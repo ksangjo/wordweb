@@ -1,3 +1,5 @@
+import { display } from './all_share.js';
+
 let word_id = 0;
 let return_history = [];
 let show_count = 0;
@@ -35,14 +37,14 @@ function circulating() {
     get_word(word_id, offset_index).then((response) =>
       response.text().then(function (text) {
         if (!response.ok) {
-          display(true);
+          display(true, document, show_count);
           return;
         }
 
         if (text === "NO WORD LEFT" || text === undefined) {
-          display(true);
+          display(true, document, show_count);
         } else {
-          display(false);
+          display(false, document, show_count);
           let jsondata = JSON.parse(text);
           show_word_info(jsondata);
           if (jsondata.id) {
@@ -68,15 +70,15 @@ function next_fifty() {
   
   let max_len = get_max_len();
   if (show_count !== 0 && o_count >= one_turn * 3) {
-    display(true);
+    display(true, document, show_count);
   } else {
-    display(false);
+    display(false, document, show_count);
   }
   if (show_count % one_turn !== 0) {
     get_word(word_id, offset_index).then((response) =>
       response.text().then(function (text) {
         if (!response.ok) {
-          display(true);
+          display(true, document, show_count);
           return;
         }
 
@@ -117,10 +119,10 @@ async function left_click() {
   if (show_count !== 0 && o_count >= one_turn * 3) {
     //display
     console.log("hey1");
-    display(true);
+    display(true, document, show_count);
     return;
   } else {
-    display(false);
+    display(false, document, show_count);
   }
   if (
     show_count !== 0 &&
@@ -139,16 +141,16 @@ async function left_click() {
     await get_word(word_id, offset_index).then((response) =>
       response.text().then(function (text) {
         if (!response.ok) {
-          display(true);
+          display(true, document, show_count);
           return;
         }
         let jsondata = JSON.parse(text);
         if (text === "NO WORD LEFT"){
-            display(true);
+            display(true, document, show_count);
           } else if (jsondata.word === undefined) {
               end_stage(true);
           }else {
-            display(false);
+            display(false, document, show_count);
             show_word_info(jsondata);
           if (jsondata.id) {
             word_id = jsondata.id;
@@ -175,10 +177,10 @@ async function right_click() {
   } 
   if (show_count !== 0 && o_count >= one_turn * 3) {
     //display
-    display(true);
+    display(true, document, show_count);
     return;
   } else {
-    display(false);
+    display(false, document, show_count);
   }
   if (show_count !== 0 && (show_count % one_turn === 0 || word_id >= max_len)) {
     //end stage
@@ -192,16 +194,16 @@ async function right_click() {
     get_word(word_id, offset_index).then((response) =>
       response.text().then(function (text) {
         if (!response.ok) {
-          display(true);
+          display(true, document, show_count);
           return;
         }
         let jsondata = JSON.parse(text);
         if (text === "NO WORD LEFT"){
-          display(true);
+          display(true, document, show_count);
         } else if (jsondata.word === undefined) {
             end_stage(true);
         }else {
-          display(false);
+          display(false, document, show_count);
           
           show_word_info(jsondata);
           if (jsondata.id) {
@@ -227,7 +229,7 @@ function get_today() {
   document.getElementsByClassName("current_date")[0].innerHTML = `${year}년 ${
     month >= 10 ? month : "0" + (month + 1)
   }월 ${date >= 10 ? date : "0" + date}일`;
-  display(false);
+  display(false, document, show_count);
 }
 
 async function get_word(word_id, offset_index) {
@@ -290,38 +292,10 @@ function end_stage(isend) {
   }
 }
 
-function display(end_of_word) {
-  if (end_of_word) {
-    document.getElementsByClassName("display")[0].style.visibility = "visible";
-    document.getElementsByClassName("english")[0].style.visibility = "hidden";
-    document.getElementsByClassName("meaning")[0].style.visibility = "hidden";
-    document.getElementsByClassName("sentence")[0].style.visibility = "hidden";
-  } else {
-    if (show_count === 0) {
-      document.getElementsByClassName("display")[0].style.visibility =
-        "visible";
-      document.getElementsByClassName("english")[0].style.visibility = "hidden";
-      document.getElementsByClassName("meaning")[0].style.visibility = "hidden";
-      document.getElementsByClassName("sentence")[0].style.visibility =
-        "hidden";
-      document.getElementsByClassName("end_of_stage")[0].style.visibility =
-        "hidden";
-    } else {
-      document.getElementsByClassName("end_of_stage")[0].style.visibility =
-        "hidden";
-      document.getElementsByClassName("display")[0].style.visibility = "hidden";
-      document.getElementsByClassName("english")[0].style.visibility =
-        "visible";
-      document.getElementsByClassName("meaning")[0].style.visibility =
-        "visible";
-      document.getElementsByClassName("sentence")[0].style.visibility =
-        "visible";
-    }
-  }
-}
+
 
 function reset_exec() {
-  display(false);
+  display(false, document, show_count);
   let status = return_history.pop();
   fetch(
     `http://127.0.0.1:8000/real_id/total/${status.real_id}/${status.count}`,
@@ -347,3 +321,7 @@ function reset_exec() {
     })
   );
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    get_today();
+})
