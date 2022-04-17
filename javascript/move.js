@@ -1,218 +1,166 @@
-import { display } from './all_share.js';
+const OFFSET_MAX = 100000000;
 
 let word_id = 0;
 let return_history = [];
 let show_count = 0;
 let o_count = 0;
 let startup_index = 0;
-let offset_index = 100000000;
+let offset_index = OFFSET_MAX;
 let is_end_stage = false;
-const one_turn = 50;
 
-function circulating() {
+const ONE_TURN = 50;
+const ONE_STAGE = 3;
+const NO_WORD_LEFT = "NO WORD LEFT";
+
+let wordInformationElement;
+let englishElement;
+let meaningElement;
+let sentenceElement;
+
+async function circulating() {
   show_count = 0;
   is_end_stage = false;
   let max_len = get_max_len();
-  if (show_count !== 0 && (show_count % one_turn === 0 || word_id >= max_len)) {
+  if (show_count !== 0 && (show_count % ONE_TURN === 0 || word_id >= max_len)) {
     end_stage(true);
   } else {
     end_stage(false);
   }
-  if (word_id > 0 && show_count % one_turn !== 0) {
-    fetch(`http://127.0.0.1:8000/plus/total/${word_id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/text",
-      },
-    }).then((response) =>
+  if (word_id > 0 && show_count % ONE_TURN !== 0) {
+    request(`/plus/total/${word_id}`).then((response) =>
       response.text().then(function (text) {
         let previous_status = JSON.parse(text);
         return_history.push(previous_status);
       })
     );
   }
-  show_count++;
   word_id = startup_index - 1;
-  if (show_count % one_turn !== 0) {
-    get_word(word_id, offset_index).then((response) =>
-      response.text().then(function (text) {
-        if (!response.ok) {
-          display(true, document, show_count);
-          return;
-        }
-
-        if (text === "NO WORD LEFT" || text === undefined) {
-          display(true, document, show_count);
-        } else {
-          display(false, document, show_count);
-          let jsondata = JSON.parse(text);
-          show_word_info(jsondata);
-          if (jsondata.id) {
-            word_id = jsondata.id;
-          }
-        }
-      })
-    );
-  }
+  show_count++;
+  await showNormal();
+  show_count--;
 }
 
-function next_fifty() {
-  offset_index += one_turn;
+async function next_fifty() {
+  offset_index += ONE_TURN;
   is_end_stage = false;
   show_count = 1;
   o_count = 0;
-  fetch(`http://127.0.0.1:8000/setting_date/total`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/text",
-      },
-    }).then((response) => console.log(response));
-  
+  request(`/setting_date/total`).then((response) => console.log(response));
+
   let max_len = get_max_len();
-  if (show_count !== 0 && o_count >= one_turn * 3) {
+  if (show_count !== 0 && o_count >= ONE_TURN * 3) {
     display(true, document, show_count);
   } else {
     display(false, document, show_count);
   }
-  if (show_count % one_turn !== 0) {
-    get_word(word_id, offset_index).then((response) =>
-      response.text().then(function (text) {
-        if (!response.ok) {
-          display(true, document, show_count);
-          return;
-        }
+  await showNormal();
+  show_count--;
+  startup_index = word_id;
+  console.log("startup", word_id);
+}
 
-        let jsondata = JSON.parse(text);
-        show_word_info(jsondata);
-        if (jsondata.id) {
-          word_id = jsondata.id;
-        }
-        startup_index = word_id;
-        console.log("startup", word_id);
-      })
-    );
+function isStageEnded() {
+  let isEnd = false;
+  if (o_count >= ONE_TURN * ONE_STAGE) {
+    isEnd = true;
+  }
+  display(isEnd, document, show_count);
+  return isEnd;
+}
+
+function isTurnEnded(max_len) {
+  let isEnd = false;
+  if (
+    (show_count % ONE_TURN === 0 || word_id >= max_len) &&
+    o_count < ONE_TURN * ONE_STAGE
+  ) {
+    isEnd = true;
+  }
+  end_stage(isEnd);
+  return isEnd;
+}
+
+async function showNormal() {
+  //normal showing
+  const response = await get_word(word_id, offset_index);
+  if (!response.ok) {
+    console.log("no response")
+    display(true, document, show_count);
+    return;
+  }
+  const text = await response.text();
+  let jsondata = JSON.parse(text);
+  if (text === NO_WORD_LEFT) {
+    console.log("display true")
+    display(true, document, show_count);
+  } else if (jsondata.word === undefined) {
+    console.log("undefined jsondata.word")
+    end_stage(true);
+  } else {
+    // console.log("text is good state")
+    display(false, document, show_count);
+    show_word_info(jsondata);
+    if (jsondata.id) {
+      word_id = jsondata.id;
+    }
+    show_count++;
   }
 }
 
-const request = (url) => fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/text",
-    },
-  });
-
 async function left_click() {
-  let max_len = get_max_len(); //watch max len
-
- if (word_id > 0 && !is_end_stage && o_count < one_turn * 3) {
-    //do plus if under 50
-    const response = await request(`http://127.0.0.1:8000/plus/total/${word_id}`)
-    const text = await response.text()
-    let previous_status = JSON.parse(text);
-    return_history.push(previous_status);
-    console.log("what22");
-    o_count++;
-    if (show_count === one_turn) {
+  if (show_count !== 0 && wordInformationElement.style.display !== 'none') {
+    let max_len = get_max_len(); //watch max len
+    if (word_id > 0 && !is_end_stage && o_count < ONE_TURN * ONE_STAGE) {
+      //do plus if under 50
+      const response = await request(`/plus/total/${word_id}`);
+      const text = await response.text();
+      let previous_status = JSON.parse(text);
+      return_history.push(previous_status);
+      console.log("what22");
+      o_count += 1;
+      if (show_count === ONE_TURN) {
         is_end_stage = true;
+      }
     }
-  }
-  if (show_count !== 0 && o_count >= one_turn * 3) {
-    //display
-    console.log("hey1");
-    display(true, document, show_count);
-    return;
-  } else {
-    display(false, document, show_count);
-  }
-  if (
-    show_count !== 0 &&
-    (show_count % one_turn === 0 || word_id >= max_len) &&
-    o_count < one_turn * 3
-  ) {
-    //end stage
-    console.log("hey2");
-    end_stage(true);
-    return;
-  } else {
-    end_stage(false);
-  }
-  if (show_count % one_turn !== 0) {
-    //normal showing
-    await get_word(word_id, offset_index).then((response) =>
-      response.text().then(function (text) {
-        if (!response.ok) {
-          display(true, document, show_count);
-          return;
-        }
-        let jsondata = JSON.parse(text);
-        if (text === "NO WORD LEFT"){
-            display(true, document, show_count);
-          } else if (jsondata.word === undefined) {
-              end_stage(true);
-          }else {
-            display(false, document, show_count);
-            show_word_info(jsondata);
-          if (jsondata.id) {
-            word_id = jsondata.id;
-          }
-          show_count++;
-        }
-      })
-    );
+
+    if (show_count !== 0) {
+      if (isStageEnded()) {
+        return;
+      }
+      if (isTurnEnded(max_len)) {
+        return;
+      }
+    }
+
+    showNormal();
   }
 }
 
 async function right_click() {
-  let max_len = get_max_len(); //watch
-  if (word_id > 0 && !is_end_stage && o_count < one_turn * 3) {
-    //do minus if under 50
-    const response = await request(`http://127.0.0.1:8000/reset/total/${word_id}`)
-    const text = await response.text()
-    let previous_status = JSON.parse(text);
-    return_history.push(previous_status);
-    o_count -= previous_status.count;
-    if (show_count === one_turn ) {
+  if (show_count !== 0 && wordInformationElement.style.display !== 'none') {
+    let max_len = get_max_len(); //watch
+    if (word_id > 0 && !is_end_stage && o_count < ONE_TURN * ONE_STAGE) {
+      //do minus if under 50
+      const response = await request(`/reset/total/${word_id}`);
+      const text = await response.text();
+      let previous_status = JSON.parse(text);
+      return_history.push(previous_status);
+      o_count -= previous_status.count;
+      if (show_count === ONE_TURN) {
         is_end_stage = true;
+      }
     }
-  } 
-  if (show_count !== 0 && o_count >= one_turn * 3) {
-    //display
-    display(true, document, show_count);
-    return;
-  } else {
-    display(false, document, show_count);
-  }
-  if (show_count !== 0 && (show_count % one_turn === 0 || word_id >= max_len)) {
-    //end stage
-    end_stage(true);
-    return;
-  } else {
-    end_stage(false);
-  }
-  if (show_count % one_turn !== 0) {
-    //normal showing
-    get_word(word_id, offset_index).then((response) =>
-      response.text().then(function (text) {
-        if (!response.ok) {
-          display(true, document, show_count);
-          return;
-        }
-        let jsondata = JSON.parse(text);
-        if (text === "NO WORD LEFT"){
-          display(true, document, show_count);
-        } else if (jsondata.word === undefined) {
-            end_stage(true);
-        }else {
-          display(false, document, show_count);
-          
-          show_word_info(jsondata);
-          if (jsondata.id) {
-            word_id = jsondata.id;
-          }
-          show_count++;
-        }
-      })
-    );
+
+    if (show_count !== 0) {
+      if (isStageEnded()) {
+        return;
+      }
+      if (isTurnEnded(max_len)) {
+        return;
+      }
+    }
+
+    showNormal();
   }
 }
 
@@ -226,102 +174,72 @@ function get_today() {
   const year = dt.getFullYear();
   const month = dt.getMonth();
   const date = dt.getDate();
-  document.getElementsByClassName("current_date")[0].innerHTML = `${year}년 ${
+  document.querySelector(".current_date").innerHTML = `${year}년 ${
     month >= 10 ? month : "0" + (month + 1)
   }월 ${date >= 10 ? date : "0" + date}일`;
   display(false, document, show_count);
 }
 
 async function get_word(word_id, offset_index) {
-  return fetch(
-    `http://127.0.0.1:8000/memorization/total/${word_id}/${offset_index}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/text",
-      },
-    }
-  )
+  return request(`/memorization/total/${word_id}/${offset_index}`);
 }
 
 function get_max_len() {
-  return Number(
-    fetch(`http://127.0.0.1:8000/len/total`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/text",
-      },
-    }).text
-  );
+  return Number(request(`/len/total`).text);
 }
 
 function show_word_info(jsondata) {
-  document.getElementsByClassName("english")[0].innerHTML = jsondata.word;
-  document.getElementsByClassName("meaning")[0].innerHTML = jsondata.meaning;
-  document.getElementsByClassName("sentence")[0].innerHTML = jsondata.sentence;
+  englishElement.innerHTML = jsondata.word;
+  meaningElement.innerHTML = jsondata.meaning;
+  sentenceElement.innerHTML = jsondata.sentence;
 }
 
 function end_stage(isend) {
   if (isend) {
-    document.getElementsByClassName("end_of_stage")[0].style.visibility =
-      "visible";
-    document.getElementsByClassName("english")[0].style.visibility = "hidden";
-    document.getElementsByClassName("meaning")[0].style.visibility = "hidden";
-    document.getElementsByClassName("sentence")[0].style.visibility = "hidden";
-    if (offset_index >= 100000000) {
+    document.querySelector(".end_of_stage").style.visibility = "visible";
+    wordInformationElement.style.display = "none";
+    if (offset_index >= OFFSET_MAX) {
       offset_index = word_id;
     }
   } else {
     if (show_count === 0) {
-      document.getElementsByClassName("display")[0].style.visibility =
-        "visible";
-      document.getElementsByClassName("english")[0].style.visibility = "hidden";
-      document.getElementsByClassName("meaning")[0].style.visibility = "hidden";
-      document.getElementsByClassName("sentence")[0].style.visibility =
-        "hidden";
+      document.querySelector(".display").style.visibility = "visible";
+      wordInformationElement.style.display = "none";
     } else {
-      document.getElementsByClassName("end_of_stage")[0].style.visibility =
-        "hidden";
-      document.getElementsByClassName("english")[0].style.visibility =
-        "visible";
-      document.getElementsByClassName("meaning")[0].style.visibility =
-        "visible";
-      document.getElementsByClassName("sentence")[0].style.visibility =
-        "visible";
+      document.querySelector(".end_of_stage").style.visibility = "hidden";
+      wordInformationElement.style.display = "block";
     }
   }
 }
 
-
-
 function reset_exec() {
-  display(false, document, show_count);
-  let status = return_history.pop();
-  fetch(
-    `http://127.0.0.1:8000/real_id/total/${status.real_id}/${status.count}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/text",
-      },
-    }
-  ).then((response) =>
-    response.text().then(function (text) {
-      let jsondata = JSON.parse(text);
-      document.getElementsByClassName("english")[0].innerHTML = jsondata.word;
-      document.getElementsByClassName("meaning")[0].innerHTML =
-        jsondata.meaning;
-      document.getElementsByClassName("sentence")[0].innerHTML =
-        jsondata.sentence;
-      if (jsondata.id) {
-        word_id = jsondata.id;
-      }
-      show_count--;
-      o_count--;
-    })
-  );
+  if (return_history.length !== 0) {
+    display(false, document, show_count);
+    let status = return_history.pop();
+    request(`/real_id/total/${status.real_id}/${status.count}`).then((response) =>
+      response.text().then(function (text) {
+        let jsondata = JSON.parse(text);
+        englishElement.innerHTML = jsondata.word;
+        meaningElement.innerHTML = jsondata.meaning;
+        sentenceElement.innerHTML = jsondata.sentence;
+        if (jsondata.id) {
+          word_id = jsondata.id;
+        }
+        show_count--;
+        o_count--;
+      })
+    );
+  }
+  else {
+    console.log("no history");
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    get_today();
-})
+  get_today();
+
+  wordInformationElement = document.querySelector(".word_information");
+  englishElement = document.querySelector(".english");
+  meaningElement = document.querySelector(".meaning");
+  sentenceElement = document.querySelector(".sentence");
+});
