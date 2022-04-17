@@ -4,7 +4,9 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet"/>
     <link href="/templete/first_page.css" rel="stylesheet"/>
     <title>Document</title>
-    <script type="module" src="/javascript/move.js"></script>
+    <script src="/javascript/utils.js"></script>
+    <script src="/javascript/all_share.js"></script>
+    <script src="/javascript/move.js"></script>
 </head>
 <body>
 <div class="first_page">
@@ -17,9 +19,11 @@
     <button class="left_button" onclick="left_click()"></button>
     <button class="right_button" onclick="right_click()"></button>
     <div class="word_card"></div>
-    <p class="english"></p>
-    <p class="meaning"></p>
-    <p class="sentence"></p>
+    <div class="word_information">
+        <p class="english"></p>
+        <p class="meaning"></p>
+        <p class="sentence"></p>
+    </div>
     <img class="O_button" src="http://127.0.0.1:8000/o_button" onclick="left_click()"></img>
     <img class="X_button" src="http://127.0.0.1:8000/x_button" onclick="right_click()"></img>
     <img class="return_button" src="http://127.0.0.1:8000/return_button" onclick="reset_exec()"></img>
