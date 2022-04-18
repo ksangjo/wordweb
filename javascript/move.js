@@ -59,54 +59,6 @@ async function next_fifty() {
   console.log("startup", word_id);
 }
 
-function isStageEnded() {
-  let isEnd = false;
-  if (o_count >= ONE_TURN * ONE_STAGE) {
-    isEnd = true;
-  }
-  display(isEnd, document, show_count);
-  return isEnd;
-}
-
-function isTurnEnded(max_len) {
-  let isEnd = false;
-  if (
-    (show_count % ONE_TURN === 0 || word_id >= max_len) &&
-    o_count < ONE_TURN * ONE_STAGE
-  ) {
-    isEnd = true;
-  }
-  end_stage(isEnd);
-  return isEnd;
-}
-
-async function showNormal() {
-  //normal showing
-  const response = await get_word(word_id, offset_index);
-  if (!response.ok) {
-    console.log("no response")
-    display(true, document, show_count);
-    return;
-  }
-  const text = await response.text();
-  let jsondata = JSON.parse(text);
-  if (text === NO_WORD_LEFT) {
-    console.log("display true")
-    display(true, document, show_count);
-  } else if (jsondata.word === undefined) {
-    console.log("undefined jsondata.word")
-    end_stage(true);
-  } else {
-    // console.log("text is good state")
-    display(false, document, show_count);
-    show_word_info(jsondata);
-    if (jsondata.id) {
-      word_id = jsondata.id;
-    }
-    show_count++;
-  }
-}
-
 async function left_click() {
   if (show_count !== 0 && wordInformationElement.style.display !== 'none') {
     let max_len = get_max_len(); //watch max len
@@ -169,17 +121,6 @@ function reload_alert() {
   alert("<새로고침> count는 저장되지만 1번 단어에서 재시작합니다.");
 }
 
-function get_today() {
-  var dt = new Date();
-  const year = dt.getFullYear();
-  const month = dt.getMonth();
-  const date = dt.getDate();
-  document.querySelector(".current_date").innerHTML = `${year}년 ${
-    month >= 10 ? month : "0" + (month + 1)
-  }월 ${date >= 10 ? date : "0" + date}일`;
-  display(false, document, show_count);
-}
-
 async function get_word(word_id, offset_index) {
   return request(`/memorization/total/${word_id}/${offset_index}`);
 }
@@ -188,55 +129,36 @@ function get_max_len() {
   return Number(request(`/len/total`).text);
 }
 
-function show_word_info(jsondata) {
-  englishElement.innerHTML = jsondata.word;
-  meaningElement.innerHTML = jsondata.meaning;
-  sentenceElement.innerHTML = jsondata.sentence;
-}
-
-function end_stage(isend) {
-  if (isend) {
-    document.querySelector(".end_of_stage").style.visibility = "visible";
-    wordInformationElement.style.display = "none";
-    if (offset_index >= OFFSET_MAX) {
-      offset_index = word_id;
-    }
+async function showNormal() {
+  //normal showing
+  const response = await get_word(word_id, offset_index);
+  if (!response.ok) {
+    console.log("no response")
+    display(true, document, show_count);
+    return;
+  }
+  const text = await response.text();
+  let jsondata = JSON.parse(text);
+  if (text === NO_WORD_LEFT) {
+    console.log("display true")
+    display(true, document, show_count);
+  } else if (jsondata.word === undefined) {
+    console.log("undefined jsondata.word")
+    end_stage(true);
   } else {
-    if (show_count === 0) {
-      document.querySelector(".display").style.visibility = "visible";
-      wordInformationElement.style.display = "none";
-    } else {
-      document.querySelector(".end_of_stage").style.visibility = "hidden";
-      wordInformationElement.style.display = "block";
-    }
-  }
-}
-
-function reset_exec() {
-  if (return_history.length !== 0) {
+    // console.log("text is good state")
     display(false, document, show_count);
-    let status = return_history.pop();
-    request(`/real_id/total/${status.real_id}/${status.count}`).then((response) =>
-      response.text().then(function (text) {
-        let jsondata = JSON.parse(text);
-        englishElement.innerHTML = jsondata.word;
-        meaningElement.innerHTML = jsondata.meaning;
-        sentenceElement.innerHTML = jsondata.sentence;
-        if (jsondata.id) {
-          word_id = jsondata.id;
-        }
-        show_count--;
-        o_count--;
-      })
-    );
-  }
-  else {
-    console.log("no history");
+    show_word_info(jsondata);
+    if (jsondata.id) {
+      word_id = jsondata.id;
+    }
+    show_count++;
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  get_today();
+  get_today(document);
+  display(false, document, show_count);
 
   wordInformationElement = document.querySelector(".word_information");
   englishElement = document.querySelector(".english");

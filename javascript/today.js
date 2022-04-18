@@ -1,12 +1,8 @@
-import get_today from './all_share.js';
-import create_array from './partial_share.js';
+// import get_today from './utils.js';
+// import create_array from './partial_share.js';
 
 function go_total() {
-    fetch(`http://127.0.0.1:8000/today_to_total/total/`, {
-        method:'GET',
-        headers:{
-            'Content-Type': 'application/text'
-        }})
+    request(`/today_to_total/total/`)
         .then((response) => {
             console.log(response);
             document.location.reload(true);
@@ -14,11 +10,7 @@ function go_total() {
 }
 
 function go_done() {
-    fetch(`http://127.0.0.1:8000/today_to_done/total`, {
-        method:'GET',
-        headers:{
-            'Content-Type': 'application/text'
-        }})
+    request(`/today_to_done/total`)
         .then((response) => {
             console.log(response);
             document.location.reload(true);
