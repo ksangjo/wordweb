@@ -1,12 +1,7 @@
-import { get_today } from './all_share.js';
-import create_array from './partial_share.js';
+// import { get_today, create_array } from './utils';
 
 function go_study_total() {
-    fetch(`http://127.0.0.1:8000/total_to_study/total`, {
-        method:'GET',
-        headers:{
-            'Content-Type': 'application/text'
-        }})
+    request(`/total_to_study/total`)
         .then((response) => {
             console.log(response);
             document.location.reload(true);
