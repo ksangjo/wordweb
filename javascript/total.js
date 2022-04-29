@@ -9,6 +9,12 @@ function go_study_total() {
         })
 }
 
+async function reset_all() {
+    request('/total_to_reset/total')
+    .then((response) => console.log("total word was reseted."));
+    document.location.reload(true);
+}
+
 function init_loader() {
     get_today(document);
     console.log("time yes");

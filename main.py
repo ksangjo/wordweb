@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from model import *
 import io
 from starlette.responses import StreamingResponse
-
+from model import main
 app = FastAPI()
 
 origins = [
@@ -162,10 +162,10 @@ async def total_word_list(whatpage:str):
     else:
         return HTTPException(status_code=404, detail="invalid page")
 
-@app.get("/total_to_done/{whatpage}")
-async def total_to_done(whatpage:str):
+@app.get("/total_to_reset/{whatpage}")
+async def total_to_reset(whatpage:str):
     if whatpage == "total":
-        if total_word_to_done(session=get_session(), word_model=word_list):
+        if total_word_to_reset(session=get_session(), word_model=word_list):
             return True
         else:
             return HTTPException(status_code=404, detail="something wrong")
